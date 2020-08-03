@@ -1,0 +1,94 @@
+# Compiled source #
+###################
+*.com
+*.class
+*.dll
+*.exe
+*.o
+*.so
+*.pyc
+__pycache__
+
+# Packages #
+############
+# it's better to unpack these files and commit the raw source
+# git has its own built in compression methods
+*.7z
+*.dmg
+*.gz
+*.iso
+*.jar
+*.rar
+*.tar
+*.zip
+
+# Logs and databases #
+######################
+*.log
+*.sql
+*.sqlite
+*.cache
+
+# OS generated files #
+######################
+.DS_Store*
+ehthumbs.db
+Icon?
+Thumbs.db
+Scripts
+Lib
+Include
+pyvenv.cfg
+django_fixer
+
+# AwfulHacks #
+##############
+script.py
+fix_imports.py
+localsettings.py
+initial_data.json_
+.env
+version
+
+# IDEs and Code Quality tools #
+##############################
+.idea
+.sonar
+
+# Windows stuff #
+#################
+*.bat
+
+# pip #
+#################
+pip-selfcheck.json
+
+# generated files #
+#################
+media/img/uploads
+media/img/blog
+media/files
+*.postgresql
+*.mongodb
+*.ai
+code
+static
+storage.private.pem
+utils/index
+api/migrations
+materials
+.scannerwork
+
+# index #
+#################
+whoosh
+
+# Let's Encrypt generated files #
+#################################
+etc/letsencrypt
+
+# SonarQube generated fiels #
+#############################
+opt/sonarqube/data/*
+opt/sonarqube/extensions/*
+opt/sonarqube/lib/bundled-plugins/*

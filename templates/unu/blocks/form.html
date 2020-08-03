@@ -1,0 +1,19 @@
+{% load formtags %}<form action="#{% if href %}{{ href }}{% endif %}" method="post" class="form"{% if id %} id="{{ id }}"{% endif %}{% if extra_form_attrs %} {{ extra_form_attrs }}{% endif %}>
+								<fieldset>{% if legend %}
+									<legend>{{ legend }}</legend>{% endif %}{% if form.non_field_errors|length %}
+									{{ form.non_field_errors }}{% endif %}
+									<ol>{% for field in form.visible_fields  %}
+										<li id="item-{{ field.name }}"{{ field|print_classes }}>
+											{{ field.label_tag }}
+											{{ field|one_line }}{% if field.help_text %}
+											<span class="form-help">{{ field.help_text }}</span>{% endif %}{% if field.errors|length %}
+											{{ field.errors }}{% endif %}
+										</li>{% endfor %}
+									</ol>
+									<div class="control{% if control_classes %}{{ control_classes }}{% endif %}">{% for field in form.hidden_fields %}
+										{{ field }}{% endfor %}
+										{% csrf_token %}
+										<input class="submit button" id="{% if submit_id %}{{ submit_id }}{% else %}submit-button{% endif %}" name="{% if submit_name %}{{ submit_name }}{% else %}submit-button{% endif %}" type="submit" value="{% if submit %}{{ submit }}{% else %}Submit{% endif %}" />
+									</div>
+								</fieldset>
+							</form>

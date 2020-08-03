@@ -1,0 +1,18 @@
+{% load i18n %}{% load client_code %}<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>{% block title %}Django Utils Framework{% endblock title %}</title>
+		<meta charset="utf-8">
+		<meta name="description" content="{% trans 'Django Utils' %}" />
+		{% block style %}{% endblock style %}
+		<meta name="viewport" content="initial-scale=1.0,maximum-scale=5.0,width=device-width" />
+	</head>
+	<body>
+		{% include 'unu/blocks/header.html' %}
+		{% include 'unu/blocks/navigation.html' %}
+		<main class="bg-bluegrey-5">
+			{% block main %}{% endblock main %}
+		</main>
+		{% block script %}{% endblock script %}
+	</body>
+</html>
