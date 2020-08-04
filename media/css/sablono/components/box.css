@@ -1,0 +1,27 @@
+.box {box-shadow:0 1px 1px rgba(0, 0, 0, 0.1);padding:0 0 2px 0;position:relative;border-radius:2px;}
+.box header {padding:10px;border-style:solid;border-width:0 0 1px 0;position:relative;}
+.box header h3 {font-size:18px;line-height:20px;height:20px;}
+.box header h3 span {font-size:13px;font-weight:300;}
+.box header h3 span:before {content:" "}
+.box header .control {width:auto;height:auto;border:none;padding:0;position:absolute;top:10px;right:10px;}
+.box header .control a {transition:.3s all ease;cursor:pointer;font-size:15px;line-height:20px;margin:0 0 0 10px;}
+.box header .control a.collapse.hide {display:none;}
+.box header .control a.close {display:none;}
+.box header .control a.close.show {display:inline-block;}
+.box.top-border {border-width:3px 0 0 0;border-style:solid;}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.box section {display:block;height:auto;overflow:hidden;transition:.3s all ease;}
+.box.collapsed section {max-height:0;}

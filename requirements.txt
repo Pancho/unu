@@ -1,0 +1,14 @@
+django
+gunicorn
+psycopg2-binary
+python3-memcached
+requests
+beautifulsoup4
+html5lib
+lxml
+pymongo
+pycrypto
+whoosh
+pyjwt
+pyyaml
+yamlordereddictloader

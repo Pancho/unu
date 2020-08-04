@@ -31,7 +31,7 @@ setup(
 		'Programming Language :: Python :: 3 :: Only',
 	],
 	keywords='development, utilities, utils',
-	packages=[''],
+	packages=['unu'],
 	python_requires='>=3.7, <4',
 	install_requires=[
 		'django',

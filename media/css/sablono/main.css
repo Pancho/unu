@@ -1,0 +1,5 @@
+:host {display:block;}
+main {padding:15px;min-height:calc(100vh - 80px);}
+main h2 {font-size:24px;letter-spacing:normal;word-spacing:normal;display:block;}
+main h2:first-child {margin:0 0 15px 0;}
+main h2 span {font-size:13px;font-weight:300;}

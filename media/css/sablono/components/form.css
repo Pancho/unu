@@ -1,0 +1,11 @@
+form {width:100%;}
+form *:not(select, input[type="checkbox"]) {-webkit-appearance:none;-moz-appearance:none;appearance:none;}
+form fieldset {}
+form fieldset .errors {display:none;padding:5px 10px;border-width:0 0 0 5px;border-style:solid;margin:10px 10px 0 10px;}
+form fieldset .errors.show {display:block;}
+form fieldset .errors li {font-size:14px;line-height:20px;}
+form fieldset slot {padding:10px;}
+form fieldset .control {display:none;padding:10px 15px;border-top:1px solid rgba(245, 245, 245, 1.0);}
+form fieldset .control.show {display:block;}
+form fieldset .control .button {text-decoration:none;display:inline-block;margin:0 15px 0 0;transition:.3s all ease;color:rgba(255, 255, 255, 1);font-size:14px;line-height:20px;font-weight:bold;padding:6px 12px;border:none;cursor:pointer;border-radius:2px;}
+form fieldset ::slotted(.hidden-fields) {display:none;}

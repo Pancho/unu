@@ -1,0 +1,13 @@
+nav {width:230px;min-height:calc(100vh - 50px);}
+nav .profile {padding:10px;}
+nav .profile .user {}
+nav .profile .user div {width:calc(100% - 85px);}
+nav .profile .user div.image {width:55px;margin:0 10px 0 0;}
+nav .profile .user p {font-size:10px;line-height:14px;margin:5px 0;}
+nav .profile .user p strong {font-size:14px;line-height:1;}
+nav .profile .user img {display:block;border-radius:50%;}
+nav ol {}
+nav ol li {}
+nav ol li a {text-decoration:none;padding:15px 5px 15px 15px;display:block;font-size:14px;line-height:18px;transition:.3s all ease;}
+nav ol li.selected a {padding:15px 5px 15px 12px;border-style:solid;border-width:0 0 0 3px;}
+nav ol li.header {padding:15px 5px 15px 15px;font-size:12px;text-transform:uppercase;}

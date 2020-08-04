@@ -1,0 +1,63 @@
+
+version: '3'
+services:
+  closure:
+    build: tools/closure
+    restart: always
+    command: bash -c "python app.py"
+    ports:
+      - 5000:5000/tcp
+  db:
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432/tcp
+    environment:
+      LANG: en_US.UTF-8
+      POSTGRES_USER: ${DB_USERNAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:?You need to set up the .env file. See docker-compose.yml for quick reference.}
+      POSTGRES_DB: ${DB_NAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
+  memcached:
+    image: memcached:latest
+    restart: always
+    ports:
+      - 12345:11211/tcp
+    command: memcached -m 1024m
+  mongo:
+    image: mongo
+    restart: always
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
+      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?You need to set up the .env file. See docker-compose.yml for quick reference.}
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80/tcp
+      - 443:443/tcp
+    depends_on:
+      - web
+    links:
+      - web
+    volumes:
+      - ${NGINX_CONF_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/etc/nginx/conf.d:consistent
+      - ${NGINX_MEDIA_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/media:consistent
+      - ${NGINX_STATIC_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/static:consistent
+  web:
+    build: .
+    restart: always
+    command: bash -c "./wait-for-it.sh db:5432 -t 0 && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn djangoutils.wsgi:application -w 2 -b 0.0.0.0:8080 --reload"
+    volumes:
+      - ${CODE_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/code:consistent
+    ports:
+      - 8080:8080/tcp
+    depends_on:
+      - db
+      - memcached
+      - mongo
+    links:
+      - db
+      - memcached
+      - mongo
+    env_file:
+      - .env

@@ -1,0 +1,22 @@
+<template>
+	<main class="bg-bluegrey-5">
+		<sablono-grid rows="1" columns="3">
+			<sablono-box title="Login" hide-collapse="true" column-span="2/3">
+				<sablono-form method="post" submit-value="Submit" action="/login" skip-authentication="true">
+					<ol class="fields">
+						<li>
+							<sablono-field id="email" label="Email" label-for="email">
+								<input type="email" name="email" id="email" class="border-grey-20" placeholder="e-mail address" required="required" />
+							</sablono-field>
+						</li>
+						<li>
+							<sablono-field id="password" label="Password" label-for="password">
+								<input type="password" name="password" id="password" class="border-grey-20" placeholder="password" required="required" />
+							</sablono-field>
+						</li>
+					</ol>
+				</sablono-form>
+			</sablono-box>
+		</sablono-grid>
+	</main>
+</template>

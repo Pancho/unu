@@ -1,0 +1,13 @@
+.head {width:100%;height:50px;}
+.head h1 {width:230px;text-align:center;}
+.head h1 a {display:block;text-decoration:none;font-size:20px;margin:0 auto;padding:15px 10px;}
+.head ol {width:calc(100% - 230px);text-align:right;margin:0;padding:0;}
+.head ol li {display:inline-block;font-size:15px;padding:0 20px;line-height:50px;height:50px;transition:.3s all ease;}
+.head ol li:hover {cursor:pointer;}
+.head ol li.hide {display:none;}
+.head ol li a {position:relative;}
+.head ol li a {text-decoration:none;line-height:inherit;color:inherit;}
+.head ol li a sup {display:block;padding:2px 3px;border-radius:2px;font-size:9px;line-height:1;position:absolute;top:10px;right:-10px;}
+.head ol .user {}
+.head ol .user img {width:30px;height:30px;border-radius:50%;float:left;margin:10px 15px 0 0;}
+.head ol .user p {font-size:13px;display:inline-block;line-height:30px;}

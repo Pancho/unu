@@ -1,0 +1,31 @@
+<template>
+	<nav class="bg-bluegrey-90">
+		<div class="profile">
+			<div class="user inline-block-children">
+				<div class="image">
+					<img src="/media/img/user.svg" alt="User" width="45" height="45"/>
+				</div>
+				<div>
+					<p class="white"><strong>User</strong></p>
+					<p class="white" title="Chief Title Officer">CTO</p>
+				</div>
+			</div>
+		</div>
+		<ol>
+			<li class="header bg-shade-30 bluegrey-70">System</li>
+			<li>
+				<a route="/admin" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-cogs"></span> Admin</a>
+			</li>
+			<li>
+				<a route="/site-health" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-heartbeat"></span> Site Health</a>
+			</li>
+			<li class="header bg-shade-30 bluegrey-70">Links</li>
+			<li>
+				<a route="/" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-cogs"></span> Index</a>
+			</li>
+			<li>
+				<a route="/docs" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-book"></span> Sablono Docs</a>
+			</li>
+		</ol>
+	</nav>
+</template>
