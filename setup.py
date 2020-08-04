@@ -7,7 +7,7 @@ here = pathlib.Path(__file__).parent.resolve()
 long_description = (here / 'README.md').read_text(encoding='utf-8')
 
 setup(
-	name='djangoutils',
+	name='unu',
 	version='0.0.1',
 	description='A Django app that makes life with Django a bit more enjoyable',
 	long_description=long_description,
