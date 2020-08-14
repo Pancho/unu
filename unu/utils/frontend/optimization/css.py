@@ -1,11 +1,11 @@
 import re
 
 
-from unu import utils
+import unu
 
 
 def update_file(file_name):
-	utils.frontend.optimization.common.update_file(file_name, 'css', minify)
+	unu.utils.frontend.optimization.common.update_file(file_name, 'css', minify)
 
 
 def remove_comments(css):

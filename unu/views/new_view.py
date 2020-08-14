@@ -4,13 +4,13 @@ import logging
 from django.views.generic import base
 
 
-from unu import utils
+import unu
 
 
 logger = logging.getLogger(__name__)
 
 
-class Controller(utils.views.mixins.debug.DebugOnlyMixin, base.TemplateView):
+class Controller(unu.utils.views.mixins.debug.DebugOnlyMixin, base.TemplateView):
 	template_name = 'unu/pages/new_view.html'
 
 	# Per chance this needs updating, this will serve as template
@@ -19,7 +19,7 @@ class Controller(utils.views.mixins.debug.DebugOnlyMixin, base.TemplateView):
 
 		context.update({
 			'view': self.kwargs.get('view'),
-			'selected_view': utils.django.helper.views.CHOICES.get(self.kwargs.get('view')),
+			'selected_view': unu.utils.django.helper.views.CHOICES.get(self.kwargs.get('view')),
 		})
 
 		return context

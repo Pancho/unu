@@ -6,7 +6,7 @@ from django.conf import settings
 from django.template import loader
 
 
-from unu import utils
+import unu
 
 
 logger = logging.getLogger(__name__)
@@ -16,7 +16,7 @@ def fix_views():
 	fixed = []
 	skipped = []
 	result = []
-	apps = utils.django.helper.context.get_apps()
+	apps = unu.utils.django.helper.context.get_apps()
 
 	for app in apps:
 		if os.path.isfile('{}/{}/views.py'.format(settings.UNU_PROJECT_ROOT, app)) and not os.path.isdir('{}/{}/views'.format(settings.UNU_PROJECT_ROOT, app)):
@@ -41,7 +41,7 @@ def fix_models():
 	fixed = []
 	skipped = []
 	result = []
-	apps = utils.django.helper.context.get_apps()
+	apps = unu.utils.django.helper.context.get_apps()
 
 	for app in apps:
 		if os.path.isfile('{}/{}/models.py'.format(settings.UNU_PROJECT_ROOT, app)) and not os.path.isdir('{}/models'.format(settings.UNU_PROJECT_ROOT, app)):
@@ -97,7 +97,7 @@ def fix_urls():
 	fixed = []
 	skipped = []
 	result = []
-	apps = utils.django.helper.context.get_apps()
+	apps = unu.utils.django.helper.context.get_apps()
 
 	for app in apps:
 		if not os.path.isfile('{}/{}/urls.py'.format(settings.UNU_PROJECT_ROOT, app)):
@@ -122,7 +122,7 @@ def fix_js_namespaces():
 	fixed = []
 	skipped = []
 	result = []
-	apps = utils.django.helper.context.get_apps()
+	apps = unu.utils.django.helper.context.get_apps()
 
 	root_namespace_path = '{}/media/js/{}.js'.format(
 		settings.UNU_PROJECT_ROOT,
