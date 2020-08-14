@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import find_packages, setup
 import pathlib
 
 
@@ -31,7 +31,7 @@ setup(
 		'Programming Language :: Python :: 3 :: Only',
 	],
 	keywords='development, utilities, utils',
-	packages=['unu'],
+	packages=find_packages(),
 	python_requires='>=3.7, <4',
 	install_requires=[
 		'django',
