@@ -12,7 +12,7 @@ setup(
 	description='A Django app that makes life with Django a bit more enjoyable',
 	long_description=long_description,
 	long_description_content_type='text/markdown',
-	author='Danijel Pančić',
+	author='Danijel Pancic',
 	author_email='danijel.pancic@unuaondo.com',
 	classifiers=[
 		# How mature is this project? Common values are
