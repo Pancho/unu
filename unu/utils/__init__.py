@@ -5,7 +5,9 @@ from . import encryption
 from . import frontend
 from . import views
 # File modules
-from . import version
+from . import ip
+from . import jwt
+from . import mongo
 
 
 __all__ = [
@@ -16,5 +18,7 @@ __all__ = [
 	'frontend',
 	'views',
 	# File modules
-	'version',
+	'ip',
+	'jwt',
+	'mongo',
 ]

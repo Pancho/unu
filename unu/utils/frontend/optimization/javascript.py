@@ -1,4 +1,3 @@
-import re
 import os
 import hashlib
 import logging
@@ -8,14 +7,14 @@ import requests
 from django.conf import settings
 
 
-import unu
+from unu import utils
 
 
 logger = logging.getLogger(__name__)
 
 
 def update_file(file_name):
-	unu.utils.frontend.optimization.common.update_file(file_name, 'js', minify)
+	utils.frontend.optimization.common.update_file(file_name, 'js', minify)
 
 
 def optimize(js):

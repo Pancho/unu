@@ -1,9 +1,11 @@
 import logging
 import os
 
+
 from django.conf import settings
 
-import unu
+
+from unu import utils
 
 
 logger = logging.getLogger(__name__)
@@ -30,7 +32,7 @@ def analyze():
 def analyze_views():
 	result = []
 
-	for app in unu.utils.django.helper.context.get_apps():
+	for app in utils.django.helper.context.get_apps():
 		has_folder = os.path.isdir('{}/{}/{}'.format(settings.UNU_PROJECT_ROOT, app, 'views'))
 		has_file = os.path.isfile('{}/{}/{}.py'.format(settings.UNU_PROJECT_ROOT, app, 'views'))
 
@@ -47,7 +49,7 @@ def analyze_views():
 def analyze_models():
 	result = []
 
-	for app in unu.utils.django.helper.context.get_apps():
+	for app in utils.django.helper.context.get_apps():
 		has_folder = os.path.isdir('{}/{}/{}'.format(settings.UNU_PROJECT_ROOT, app, 'models'))
 		has_file = os.path.isfile('{}/{}/{}.py'.format(settings.UNU_PROJECT_ROOT, app, 'models'))
 
@@ -64,7 +66,7 @@ def analyze_models():
 def analyze_urls():
 	result = []
 
-	for app in unu.utils.django.helper.context.get_apps():
+	for app in utils.django.helper.context.get_apps():
 		has_views_folder = os.path.isdir('{}/{}/{}'.format(settings.UNU_PROJECT_ROOT, app, 'views'))
 		has_views_file = os.path.isfile('{}/{}/{}.py'.format(settings.UNU_PROJECT_ROOT, app, 'views'))
 		has_urls_file = os.path.isfile('{}/{}/{}'.format(settings.UNU_PROJECT_ROOT, app, 'urls.py'))
@@ -90,7 +92,7 @@ def analyze_js_namespaces():
 			'text': 'Project still doesn\'t have JavaScript namespaces. Recommending JS namespace fix.'
 		})
 
-	for app in unu.utils.django.helper.context.get_apps():
+	for app in utils.django.helper.context.get_apps():
 		js_app_name = '-'.join(app.split('_'))
 
 		has_views_folder = os.path.isdir('{}/{}/{}'.format(settings.UNU_PROJECT_ROOT, app, 'views'))

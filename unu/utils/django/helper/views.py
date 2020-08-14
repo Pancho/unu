@@ -286,9 +286,9 @@ CONTROLLER_MIXINS = collections.OrderedDict({
 		],
 	},
 	'DebugOnlyMixin': {
-		'module_path': 'unu.utils.views.mixins.debug.DebugOnlyMixin',
+		'module_path': 'utils.views.mixins.debug.DebugOnlyMixin',
 		'required_imports': [
-			'import unu',
+			'from unu import utils',
 		],
 	},
 })
@@ -336,7 +336,7 @@ VIEW_CONFIG = {
 		]),
 		'imports': sorted(
 			set().union(
-				*[['import unu']] + [CONTROLLER_MIXINS.get(mixin).get('required_imports') for mixin in context.get('mixins')]
+				*[['from unu import utils']] + [CONTROLLER_MIXINS.get(mixin).get('required_imports') for mixin in context.get('mixins')]
 			)
 		),
 	}),
