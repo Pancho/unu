@@ -89,7 +89,8 @@ SCRIPT = safestring.mark_safe('''
 					return response.text();
 				}).then(function (text) {
 					var codeMatch = jsHTMLRegex.exec(text),
-						includeMatch = jsIncludeRegex.exec(text);
+						includeMatch = jsIncludeRegex.exec(text),
+						build = '';
 
 					while (codeMatch !== null) {
 						codeMatch[1].split(' ').forEach(function (cssClass, index) {
@@ -101,12 +102,13 @@ SCRIPT = safestring.mark_safe('''
 					}
 
 					while (includeMatch !== null) {
-						includeMatch[1].split(' ').forEach(function (includeSelector, index) {
-							includeSelector = includeSelector.trim();
-							if (lazyStyles.indexOf(includeSelector) === -1) {
-								lazyStyles.push(includeSelector);
+						includeMatch[1].trim().split(' ').forEach(function (includeSelector, index) {
+							build += (' ' + includeSelector.trim());
+							if (lazyStyles.indexOf(build) === -1) {
+								lazyStyles.push(build);
 							}
 						});
+						build = '';
 						includeMatch = jsIncludeRegex.exec(text);
 					}
 
@@ -159,7 +161,7 @@ SCRIPT = safestring.mark_safe('''
 								container.textContent = 'Optimization of files failed. See application logs for details.';
 							}
 
-							container.style = 'position:fixed;background:black;color:yellow;font-size:20px;padding:10px;top:20px;right:20px;';
+							container.style = 'position:fixed;background:black;color:yellow;font-size:20px;padding:10px;top:20px;right:20px;z-index:999999;';
 
 							document.body.appendChild(container);
 

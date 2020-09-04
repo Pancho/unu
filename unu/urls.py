@@ -1,7 +1,6 @@
 from django.conf import settings
 from django.urls import path
 
-
 from unu import views
 
 
@@ -22,4 +21,9 @@ if settings.DEBUG:
 		path('get-urls', views.get_urls.Controller.as_view(), name='get_urls'),
 		path('get-models', views.get_models.Controller.as_view(), name='get_models'),
 		path('toggle-template-static', views.toggle_template_static.Controller.as_view(), name='toggle_template_static'),
+		path('fiu', views.fiu.Controller.as_view(), name='fiu'),
+		path('fiu-get-files', views.fiu_get_files.Controller.as_view(), name='fiu_get_files'),
+		path('fiu-new-app', views.fiu_new_app.Controller.as_view(), name='fiu_new_app'),
+		path('fiu-new-page', views.fiu_new_page.Controller.as_view(), name='fiu_new_page'),
+		path('fiu-new-component', views.fiu_new_component.Controller.as_view(), name='fiu_new_component'),
 ]

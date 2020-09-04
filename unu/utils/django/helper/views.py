@@ -329,7 +329,7 @@ VIEW_CONFIG = {
 	'upgrade_context': lambda context: context.update({
 		'view_template': 'view',
 		'view_name': text.slugify(context.get('name')).replace('-', '_'),
-		'url': text.slugify(context.get('name')),
+		'url': text.slugify(context.get('name').replace('_', ' ')),
 		'http_methods': ', '.join(['\'{}\''.format(method.lower()) for method in context.get('methods')]),
 		'class_extensions': ', '.join([
 			CONTROLLER_MIXINS.get(mixin).get('module_path') for mixin in context.get('mixins')
@@ -376,7 +376,7 @@ TEMPLATE_VIEW_CONFIG = {
 	'upgrade_context': lambda context: context.update({
 		'view_template': 'template_view',
 		'view_name': text.slugify(context.get('name')).replace('-', '_'),
-		'url': text.slugify(context.get('name')),
+		'url': text.slugify(context.get('name').replace('_', ' ')),
 		'class_extensions': ', '.join([
 			CONTROLLER_MIXINS.get(mixin).get('module_path') for mixin in context.get('mixins')
 		]),
@@ -460,7 +460,7 @@ REDIRECT_VIEW_CONFIG = {
 	'upgrade_context': lambda context: context.update({
 		'view_template': 'redirect_view',
 		'view_name': text.slugify(context.get('name')).replace('-', '_'),
-		'url': text.slugify(context.get('name')),
+		'url': text.slugify(context.get('name').replace('_', ' ')),
 		'class_extensions': ', '.join([
 			CONTROLLER_MIXINS.get(mixin).get('module_path') for mixin in context.get('mixins')
 		]),
@@ -506,7 +506,7 @@ FORM_VIEW_CONFIG = {
 	'upgrade_context': lambda context: context.update({
 		'view_template': 'form_view',
 		'view_name': text.slugify(context.get('name')).replace('-', '_'),
-		'url': text.slugify(context.get('name')),
+		'url': text.slugify(context.get('name').replace('_', ' ')),
 		'class_extensions': ', '.join([
 			CONTROLLER_MIXINS.get(mixin).get('module_path') for mixin in context.get('mixins')
 		]),

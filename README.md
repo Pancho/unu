@@ -1,6 +1,8 @@
 # djangoutils
 
 * need to restructure the imports as there are problems with usage
+
+* need the common management commands
   
 * FIU
     * installer (which means that most of the following will live in FIU repo)
