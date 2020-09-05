@@ -107,9 +107,10 @@ def parse_index(index_file_contents):
 	pending_imports.update({
 		not_found_page: imports.get(not_found_page),
 	})
-	pending_imports.update({
-		authentication_class: imports.get(authentication_class),
-	})
+	if authentication_class != 'null' and authentication_class is not None:
+		pending_imports.update({
+			authentication_class: imports.get(authentication_class),
+		})
 	for routes_import in routes_imports:
 		pending_imports.update({
 			routes_import: imports.get(routes_import),
