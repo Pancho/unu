@@ -157,7 +157,6 @@ def assemble_fiu_component(
 		'component_type': component_type,
 		'provide_store': provide_store,
 		'enable_logging': enable_logging,
-		'hello_text': 'Page is working' if component_type == 'pages' else 'Component is working',
 		'params': ', '.join(params),
 	}
 
