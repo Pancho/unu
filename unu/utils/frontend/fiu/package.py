@@ -130,11 +130,20 @@ def create_fiu_page(component_name, url_pattern, use_store):
 		'class_name': page_class,
 		'path': url_pattern,
 	})
+	log.append('Added route {}'.format({
+		'class_name': page_class,
+		'path': url_pattern,
+	}))
 	if use_store:
 		index['providers'].append('{}.STORE_PROVIDER'.format(page_class))
+		log.append('Adding provider {}.STORE_PROVIDER'.format(page_class))
 	index['imports'].update({
 		page_class: page_path,
 	})
+	log.append('Adding import {}:{}'.format(
+		page_class,
+		page_path,
+	))
 
 	index_log = unu.utils.frontend.fiu.helper.create_fiu_index(**index)
 	log.extend(index_log)

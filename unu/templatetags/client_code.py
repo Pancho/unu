@@ -105,7 +105,7 @@ SCRIPT = safestring.mark_safe('''
 						includeMatch[1].trim().split(' ').forEach(function (includeSelector, index) {
 							build += (' ' + includeSelector.trim());
 							if (lazyStyles.indexOf(build) === -1) {
-								lazyStyles.push(build);
+								lazyStyles.push(build.trim());
 							}
 						});
 						build = '';

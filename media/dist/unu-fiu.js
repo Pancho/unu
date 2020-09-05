@@ -619,9 +619,8 @@ Djangoutils.Unu.Fiu = (function () {
 				}).then(function (response) {
 					return response.json();
 				}).then(function (data) {
-					/* CSS: #app-log li */
-					/* CSS: #component-log li */
-					/* CSS: #page-log li */
+					/* CSS: .app-data */
+					/* CSS: .log li */
 					var log = document.getElementById(logId);
 					while (log.lastElementChild) {
 						log.removeChild(log.lastElementChild);
