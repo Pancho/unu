@@ -1,7 +1,7 @@
 import { Component } from '../../../fiu/js/component.js';{% if provide_store %}
 import { takeUntil } from '../../../fiu/js/reactive/operators.js';
 import { Subject } from '../../../fiu/js/reactive/subject.js';{% if component_type == 'pages' %}
-import { Store } from '../../../fiu/js/state.js';{% endif %}{% endif %}
+import { Store } from '../../../fiu/js/state-management.js';{% endif %}{% endif %}
 
 export class {{ class_name }} extends Component {
 	static tagName = '{{ tag_name }}';
