@@ -126,7 +126,6 @@ SCRIPT = safestring.mark_safe('''
 						}
 					});
 
-					//
 					Object.keys(document.styleSheets).forEach(function (sheetKey, index) {
 						var sheet = document.styleSheets[sheetKey],
 							rules = trimRules(sheet.rules),
