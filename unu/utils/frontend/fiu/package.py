@@ -72,7 +72,7 @@ def create_fiu_app(app_name, router_root_url, http_endpoint_stub, enable_logging
 		'http_endpoint_stub': http_endpoint_stub,
 		'on_app_ready': None,
 		'providers': [],
-		'logger_config': '{\n\t\t\tlevel: LogLevels.TRACE,\n\t\t}' if enable_logging else '',
+		'logger_config': 'level: LogLevels.TRACE,' if enable_logging else '',
 		'imports': {
 			index_page_class: index_page_path,
 			not_found_page_class: not_found_page_path,
