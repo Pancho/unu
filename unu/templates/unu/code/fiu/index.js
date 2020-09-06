@@ -25,7 +25,8 @@ new {{ app_name }}({
 			guard: {{ route.guard }},{% endif %}{% if route.hooks %}
 			hooks: {{ route.hooks|safe }},{% endif %}
 		},{% endfor %}
-	],
+	],{% if authentication_url %}
+	authenticationUrl: '{{ authentication_url }}',{% endif %},
 	authenticationClass: {% if authentication_class %}{{ authentication_class }}{% else %}null{% endif %},
 	providers: [{% for provider in providers %}
 		{{ provider }},{% endfor %}

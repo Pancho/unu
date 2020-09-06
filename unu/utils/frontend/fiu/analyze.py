@@ -19,6 +19,7 @@ FIU_APP_GUARD_ENTRY = re.compile(r'(guard: )(.*)(,*)')
 FIU_APP_HOOKS_ENTRY = re.compile(r'(hooks: )((.*?\s)*?})')
 FIU_APP_ROOT_STYLESHEETS = re.compile(r'(rootStylesheets: \[\s)((.*?\s)*?)(\])')
 FIU_APP_AUTHENTICATION_CLASS = re.compile(r'(authenticationClass: )(.*?)(,)')
+FIU_APP_AUTHENTICATION_URL = re.compile(r'(authenticationUrl: \')(.*)(\',*)')
 FIU_APP_HTTP_ENDPOINT_STUB = re.compile(r'(httpEndpointStub: \')(.*?)(\',)')
 FIU_APP_ON_APP_READY = re.compile(r'(onAppReady: \[\n+?\s+)(.*?)(\n\s\],)', re.M | re.S)
 FIU_APP_PROVIDERS = re.compile(r'(providers: \[)(.*?)(])', re.M | re.S)
@@ -95,6 +96,7 @@ def parse_index(index_file_contents):
 	not_found_page = parse_not_found_page(index_file_contents)
 	routes, routes_imports = parse_routes(index_file_contents)
 	root_stylesheets = parse_root_stylesheets(index_file_contents)
+	authentication_url = parse_authentication_url(index_file_contents)
 	authentication_class = parse_authentication_class(index_file_contents)
 	http_endpoint_stub = parse_http_endpoint_stub(index_file_contents)
 	on_app_ready = parse_on_app_ready(index_file_contents)
@@ -123,6 +125,7 @@ def parse_index(index_file_contents):
 		'not_found_page': not_found_page,
 		'routes': routes,
 		'root_stylesheets': root_stylesheets,
+		'authentication_url': authentication_url,
 		'authentication_class': authentication_class,
 		'http_endpoint_stub': http_endpoint_stub,
 		'on_app_ready': on_app_ready,
@@ -227,6 +230,13 @@ def parse_root_stylesheets(index_file_contents):
 			result.append(stylesheet_import.strip().replace('\'', ''))
 
 	return result
+
+
+def parse_authentication_url(index_file_contents):
+	match = FIU_APP_AUTHENTICATION_URL.search(index_file_contents)
+	if match is not None:
+		class_name = match.group(2).strip()
+		return class_name
 
 
 def parse_authentication_class(index_file_contents):
