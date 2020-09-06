@@ -158,6 +158,7 @@ def assemble_fiu_component(
 		'provide_store': provide_store,
 		'enable_logging': enable_logging,
 		'params': ', '.join(params),
+		'include_stylesheet': include_stylesheet,
 	}
 
 	if not os.path.exists(component_folder):
