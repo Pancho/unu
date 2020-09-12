@@ -1,0 +1,6 @@
+/* include:media/css/sablono.css */
+
+.app-data {max-height:330px;overflow-y:scroll;}
+
+.log {max-height:330px;overflow-y:scroll;}
+.log li {font-size:14px;line-height:20px;padding:10px 0;border-width:0 0 1px 0;border-style:solid;word-break:break-word;}

@@ -25,7 +25,7 @@ export class {{ class_name }} extends Component {
 	unsubscribe = new Subject();{% endif %}
 
 	constructor({{ params }}) {
-		super({{ class_name }});{% if enable_logging %}
+		super();{% if enable_logging %}
 		this.logger.log('{{ class_name }} constructor finished')();{% else %}
 		console.log('{{ class_name }} constructor finished'){% endif %}{% if provide_store %}
 		// this.store.select('slice/part').pipe(

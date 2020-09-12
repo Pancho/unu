@@ -17,6 +17,7 @@ class Controller(views.View, unu.utils.views.mixins.debug.DebugOnlyMixin):
 
 	def post(self, request, *args, **kwargs):
 		log = unu.utils.frontend.fiu.package.create_fiu_component(
+			self.request.POST.get('component-app-slug'),
 			self.request.POST.get('component-name'),
 			self.request.POST.get('component-use-store') is not None,
 			self.request.POST.get('component-include-stylesheet') is not None,

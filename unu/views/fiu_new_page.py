@@ -17,6 +17,7 @@ class Controller(views.View, unu.utils.views.mixins.debug.DebugOnlyMixin):
 
 	def post(self, request, *args, **kwargs):
 		log = unu.utils.frontend.fiu.package.create_fiu_page(
+			self.request.POST.get('page-app-slug'),
 			self.request.POST.get('page-name'),
 			self.request.POST.get('page-router-url-pattern'),
 			self.request.POST.get('page-enable-store') is not None,

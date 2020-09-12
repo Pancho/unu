@@ -68,6 +68,7 @@ def create_fiu_app(app_name, router_root_url, http_endpoint_stub, enable_logging
 			'/{}fiu/css/meta'.format(settings.UNU_FRONTEND_MEDIA_PATH),
 			'/{}fiu/css/normalize'.format(settings.UNU_FRONTEND_MEDIA_PATH),
 		],
+		'authentication_url': None,
 		'authentication_class': None,
 		'http_endpoint_stub': http_endpoint_stub,
 		'on_app_ready': None,
@@ -85,10 +86,10 @@ def create_fiu_app(app_name, router_root_url, http_endpoint_stub, enable_logging
 	return log
 
 
-def create_fiu_component(component_name, use_store, include_stylesheet):
+def create_fiu_component(app_folder, component_name, use_store, include_stylesheet):
 	log = []
 
-	app_data = unu.utils.frontend.fiu.analyze.get_fiu_app_data()
+	app_data = unu.utils.frontend.fiu.analyze.get_fiu_app_data(app_folder)
 	index = app_data.get('index')
 	app_name = index.get('app_name')
 	enable_logging = index.get('logger_config') is not None
@@ -106,10 +107,10 @@ def create_fiu_component(component_name, use_store, include_stylesheet):
 	return log
 
 
-def create_fiu_page(component_name, url_pattern, use_store):
+def create_fiu_page(app_folder, component_name, url_pattern, use_store):
 	log = []
 
-	app_data = unu.utils.frontend.fiu.analyze.get_fiu_app_data()
+	app_data = unu.utils.frontend.fiu.analyze.get_fiu_app_data(app_folder)
 	index = app_data.get('index')
 	app_name = index.get('app_name')
 	enable_logging = index.get('logger_config') is not None

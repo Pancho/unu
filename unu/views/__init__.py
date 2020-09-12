@@ -1,6 +1,7 @@
 from . import add_closure_compiler
 from . import analyze
 from . import fiu
+from . import fiu_app
 from . import fiu_get_files
 from . import fiu_new_app
 from . import fiu_new_component
@@ -23,6 +24,7 @@ __all__ = [
 	'add_closure_compiler',
 	'analyze',
 	'fiu',
+	'fiu_app',
 	'fiu_get_files',
 	'fiu_new_app',
 	'fiu_new_component',

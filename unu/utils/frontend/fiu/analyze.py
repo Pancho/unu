@@ -47,13 +47,9 @@ def has_fiu_app():
 	return False
 
 
-def get_fiu_app_data():
-	if not has_fiu_app():
-		return {}
+def get_fiu_apps():
+	apps = []
 
-	app_file = ''
-	app_folder = ''
-	index_file_contents = ''
 	for folder in os.listdir(settings.UNU_FRONTEND_MEDIA_PATH):
 		index_file_path = '{}{}/index.js'.format(
 			settings.UNU_FRONTEND_MEDIA_PATH,
@@ -62,18 +58,44 @@ def get_fiu_app_data():
 		if os.path.exists(index_file_path):
 			with open(index_file_path, 'r') as index_file:
 				index_file_contents = index_file.read()
-				app_file = index_file_path
-				app_folder = '/'.join(index_file_path.split('/')[:-1])
+				match = FIU_APP_FILE_REGEX.search(index_file_contents)
+				if match is not None:
+					apps.append({
+						'slug': folder,
+						'name': match.group(2).strip(),
+					})
+
+	return apps
+
+
+def get_fiu_app_data(app_folder):
+	if not has_fiu_app():
+		return {}
+
+	app_file = ''
+	index_file_contents = ''
+	index_file_path = '{}{}/index.js'.format(
+		settings.UNU_FRONTEND_MEDIA_PATH,
+		app_folder,
+	)
+	logger.info(app_folder)
+	logger.info(index_file_path)
+	if os.path.exists(index_file_path):
+		with open(index_file_path, 'r') as index_file:
+			index_file_contents = index_file.read()
+			app_file = index_file_path
 
 	pages = []
+	pages_folder = '{}{}/pages'.format(settings.UNU_FRONTEND_MEDIA_PATH, app_folder)
 	components = []
+	components_folder = '{}{}/components'.format(settings.UNU_FRONTEND_MEDIA_PATH, app_folder)
 
-	if os.path.exists('{}/pages'.format(app_folder)):
-		for folder in os.listdir('{}/pages'.format(app_folder)):
+	if os.path.exists(pages_folder):
+		for folder in os.listdir(pages_folder):
 			pages.append(folder)
 
-	if os.path.exists('{}/components'.format(app_folder)):
-		for folder in os.listdir('{}/components'.format(app_folder)):
+	if os.path.exists(components_folder):
+		for folder in os.listdir(components_folder):
 			components.append(folder)
 
 	index = parse_index(index_file_contents)

@@ -26,4 +26,5 @@ if settings.DEBUG:
 		path('fiu-new-app', views.fiu_new_app.Controller.as_view(), name='fiu_new_app'),
 		path('fiu-new-page', views.fiu_new_page.Controller.as_view(), name='fiu_new_page'),
 		path('fiu-new-component', views.fiu_new_component.Controller.as_view(), name='fiu_new_component'),
+		path('fiu-app/<slug:app_folder>', views.fiu_app.Controller.as_view(), name='fiu_app'),
 ]

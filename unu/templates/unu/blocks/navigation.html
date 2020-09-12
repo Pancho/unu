@@ -1,11 +1,15 @@
 <nav class="navigation bg-bluegrey-90">
 			<ol>
-				<li class="header bg-shade-30 bluegrey-70">Project</li>
+				<li class="header bg-shade-30 bluegrey-70">Django</li>
 				<li>
-					<a href="{% url 'unu:index' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-cogs"></span> Unu</a>
+					<a href="{% url 'unu:index' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-cogs"></span> Unu Utils</a>
 				</li>
+				<li class="header bg-shade-30 bluegrey-70">Fiu</li>
 				<li>
-					<a href="{% url 'unu:fiu' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fab fa-js-square"></span> Fiu</a>
-				</li>
+					<a href="{% url 'unu:fiu' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fab fa-js-square"></span> Fiu Apps</a>
+				</li>{% for fiu_app in fiu_apps %}
+				<li>
+					<a href="{% url 'unu:fiu_app' fiu_app.slug %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-sitemap"></span> {{ fiu_app.name }}</a>
+				</li>{% endfor %}
 			</ol>
 		</nav>

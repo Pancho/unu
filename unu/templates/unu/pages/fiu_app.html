@@ -1,0 +1,149 @@
+{% extends 'unu/skeleton.html' %}{% load i18n %}{% load formtags %}{% load optimization %}{% block style %}{% css 'unu/fiu-app' %}{% endblock style %}{% block script %}{% javascript 'unu/fiu-app' %}{% endblock script %}{% block main %}<div>
+					<h2>Fiu App <span class="grey-60">{{ fiu_app_data.index.app_name }}</span></h2>
+				</div>
+				<div data-grid="1/1">
+					<section class="box top-border bg-white border-blue-50" data-columns="1/-1">
+						<header class="border-grey-10">
+							<h3>Fiu App {{ fiu_app_data.index.app_name }}</h3>
+						</header>
+						<div class="content">
+							<dl class="inline-block-children app-data">
+								<dt>App Name</dt>
+								<dd>{{ fiu_app_data.index.app_name }}</dd>
+								<dt>App File</dt>
+								<dd>{{ fiu_app_data.app_file }}</dd>
+								<dt>App Folder</dt>
+								<dd>{{ fiu_app_data.app_folder }}</dd>
+								<dt>App Page Folders</dt>
+								<dd>
+									<ol>{% for page in fiu_app_data.page_folders %}
+										<li>{{ page }}</li>{% endfor %}
+									</ol>
+								</dd>
+								<dt>App Component Folders</dt>
+								<dd>
+									<ol>{% for component in fiu_app_data.component_folders %}
+										<li>{{ component }}</li>{% endfor %}
+									</ol>
+								</dd>
+								<dt>App Router Root URL</dt>
+								<dd>{{ fiu_app_data.index.router_root_url }}</dd>
+								<dt>App Homepage component</dt>
+								<dd>{{ fiu_app_data.index.index_page }}</dd>
+								<dt>App Not Found component</dt>
+								<dd>{{ fiu_app_data.index.not_found_page }}</dd>
+								<dt>Routes</dt>
+								<dd>
+									<ol>{% for route in fiu_app_data.index.routes %}
+										<li>({{ route.path }}) -> {{ route.class_name }}{% if route.guard %} (guard: {{ route.guard }}){% endif %}</li>{% endfor %}
+									</ol>
+								</dd>
+								<dt>Root Stylesheets</dt>
+								<dd>
+									<ol>{% for root_stylesheet in fiu_app_data.index.root_stylesheets %}
+										<li>{{ root_stylesheet }}</li>{% endfor %}
+									</ol>
+								</dd>
+								<dt>App Authentication URL</dt>
+								<dd>{{ fiu_app_data.index.authentication_url }}</dd>
+								<dt>App HTTP Authentication Class</dt>
+								<dd>{{ fiu_app_data.index.authentication_class }}</dd>
+								<dt>App HTTP Endpoint Stub</dt>
+								<dd>{{ fiu_app_data.index.http_endpoint_stub }}</dd>
+								<dt>App Providers</dt>
+								<dd>
+									<ol>{% for provider in fiu_app_data.index.providers %}
+										<li>{{ provider }}</li>{% endfor %}
+									</ol>
+								</dd>
+								<dt>Imports</dt>
+								<dd>
+									<ol>{% for class_name, class_path in fiu_app_data.index.imports.items %}
+										<li>import { {{ class_name }} } from '.{{ class_path }}';</li>{% endfor %}
+									</ol>
+								</dd>
+								<dt>On App Ready Functions</dt>
+								<dd>
+									<p title="{{ fiu_app_data.index.on_app_ready }}">Hover here for value</p>
+								</dd>
+								<dt>Logger Config</dt>
+								<dd>
+									<p title="{{ fiu_app_data.index.logger_config }}">Hover here for value</p>
+								</dd>
+							</dl>
+						</div>
+					</section>
+				</div>
+				<div data-grid="1/5">
+					<section class="box top-border bg-white border-blue-50" data-columns="1/4">
+						<header class="border-grey-10">
+							<h3>New Fiu Component</h3>
+						</header>
+						<form id="new-fiu-component" action="{% url 'unu:fiu_new_component' %}">
+							<fieldset>
+								<ol>
+									<li>
+										<label for="component-name">Component Name</label>
+										<input type="text" class="field" id="component-name" name="component-name" required="required" />
+									</li>
+									<li class="checkbox">
+										<label for="component-use-store"><input type="checkbox" id="component-use-store" name="component-use-store" value="component-use-store" /> Use Store</label>
+									</li>
+									<li class="checkbox">
+										<label for="component-include-stylesheet"><input type="checkbox" id="component-include-stylesheet" name="component-include-stylesheet" value="component-include-stylesheet" /> Include Stylesheet</label>
+									</li>
+								</ol>
+								<div class="control">
+									<input type="hidden" id="component-app-slug" name="component-app-slug" value="{{ fiu_app_data.app_folder }}" />
+									<input type="submit" class="button bg-green-50 bg-green-50-hover" value="Create" />
+								</div>
+							</fieldset>
+						</form>
+					</section>
+					<section class="box top-border bg-white border-blue-50" data-columns="4/-1">
+						<header class="border-grey-10">
+							<h3>Report <span>(log)</span></h3>
+						</header>
+						<div class="content">
+							<ol id="component-log" class="log">
+							</ol>
+						</div>
+					</section>
+				</div>
+				<div data-grid="1/5">
+					<section class="box top-border bg-white border-blue-50" data-columns="1/4">
+						<header class="border-grey-10">
+							<h3>New Fiu Page</h3>
+						</header>
+						<form id="new-fiu-page" action="{% url 'unu:fiu_new_page' %}">
+							<fieldset>
+								<ol>
+									<li>
+										<label for="page-name">Page Name</label>
+										<input type="text" class="field" id="page-name" name="page-name" required="required" />
+									</li>
+									<li>
+										<label for="page-router-url-pattern">Router URL Pattern</label>
+										<input type="text" class="field" id="page-router-url-pattern" name="page-router-url-pattern" required="required" placeholder="Something like /page-name or /page-name/:first-param/:second-param" />
+									</li>
+									<li class="checkbox">
+										<label for="page-enable-store"><input type="checkbox" id="page-enable-store" name="page-enable-store" value="page-enable-store" /> Enable Store</label>
+									</li>
+								</ol>
+								<div class="control">
+									<input type="hidden" id="page-app-slug" name="page-app-slug" value="{{ fiu_app_data.app_folder }}" />
+									<input type="submit" class="button bg-green-50 bg-green-50-hover" value="Create" />
+								</div>
+							</fieldset>
+						</form>
+					</section>
+					<section class="box top-border bg-white border-blue-50" data-columns="4/-1">
+						<header class="border-grey-10">
+							<h3>Report <span>(log)</span></h3>
+						</header>
+						<div class="content">
+							<ol id="page-log" class="log">
+							</ol>
+						</div>
+					</section>
+				</div>{% endblock main %}
