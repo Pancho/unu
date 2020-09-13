@@ -26,7 +26,7 @@ new {{ app_name }}({
 			hooks: {{ route.hooks|safe }},{% endif %}
 		},{% endfor %}
 	],{% if authentication_url %}
-	authenticationUrl: '{{ authentication_url }}',{% endif %},
+	authenticationUrl: '{{ authentication_url }}',{% endif %}
 	authenticationClass: {% if authentication_class %}{{ authentication_class }}{% else %}null{% endif %},
 	providers: [{% for provider in providers %}
 		{{ provider }},{% endfor %}
