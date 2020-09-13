@@ -40,9 +40,4 @@ export class {{ class_name }} extends Component {
 
 	onTemplateLoaded() {
 	}
-
-	populateFields() {
-		return {
-		};
-	}
 }
