@@ -10,4 +10,4 @@ html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockq
 }@keyframes spin { 
   0% { transform: rotate(0deg); }
   100% { transform: rotate(1turn); }
-}.live-slug { margin: 10px 0px; font-size: 14px; line-height: 20px; font-style: italic; }
+}.live-slug { margin: 10px 0px; font-size: 14px; line-height: 20px; font-style: italic; }#log li { font-size: 14px; line-height: 20px; padding: 10px 0px; border-width: 0px 0px 1px; border-style: solid; word-break: break-word; }
