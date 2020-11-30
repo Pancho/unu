@@ -3,13 +3,13 @@ version: '3'
 services:
   closure:
     build: tools/closure
-    restart: always
+    restart: on-failure
     command: bash -c "python app.py"
     ports:
       - 5000:5000/tcp
   db:
     image: postgres
-    restart: always
+    restart: on-failure
     ports:
       - 5432:5432/tcp
     environment:
@@ -19,19 +19,19 @@ services:
       POSTGRES_DB: ${DB_NAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
   memcached:
     image: memcached:latest
-    restart: always
+    restart: on-failure
     ports:
       - 12345:11211/tcp
     command: memcached -m 1024m
   mongo:
     image: mongo
-    restart: always
+    restart: on-failure
     environment:
       MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
       MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?You need to set up the .env file. See docker-compose.yml for quick reference.}
   nginx:
     image: nginx:latest
-    restart: always
+    restart: on-failure
     ports:
       - 80:80/tcp
     depends_on:
@@ -44,7 +44,7 @@ services:
       - ${NGINX_STATIC_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/static:consistent
   web:
     build: .
-    restart: always
+    restart: on-failure
     command: bash -c "./wait-for-it.sh db:5432 -t 0 && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn djangoutils.wsgi:application -w 2 -b 0.0.0.0:8080 --reload"
     volumes:
       - ${CODE_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/code:consistent
