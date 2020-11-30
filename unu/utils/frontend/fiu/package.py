@@ -16,7 +16,7 @@ def get_fiu_files():
 	response = requests.get(settings.UNU_FIU_LOCATION, stream=True)
 	zip_file = zipfile.ZipFile(io.BytesIO(response.content))
 	for zip_info in zip_file.filelist:
-		if zip_info.filename.endswith('.js') or zip_info.filename.endswith('.css'):
+		if '/fiu/js/' in zip_info.filename and zip_info.filename.endswith('.js') or '/fiu/css/' in zip_info.filename and zip_info.filename.endswith('.css'):
 			target_file_name = '{}fiu/{}'.format(
 				settings.UNU_FRONTEND_MEDIA_PATH,
 				zip_info.filename.split('fiu/')[1]
