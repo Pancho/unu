@@ -134,7 +134,7 @@ SCRIPT = safestring.mark_safe('''
 							body = new FormData(),
 							url = '{% url 'unu:optimize_client_code' %}';
 
-						if (!sheet.href) {
+						if (!sheet.href || sheet.href.indexOf('/dist/') === -1) {
 							return;
 						}
 
