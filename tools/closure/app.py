@@ -37,16 +37,21 @@ def hello():
 	)
 
 	stdout, stderr = process.communicate()
+	app.logger.info(100 * '-')
+	app.logger.info(f'In file name: {in_file_name}')
+	app.logger.info(f'Out file name: {out_file_name}')
+	app.logger.info(f'Std Out: {stdout}')
+	app.logger.info(f'Std Err: {stderr}')
+	app.logger.info(100 * '-')
 
 	try:
 		with open(out_file_name, 'r') as file:
 			compiled_code = file.read()
+		os.remove(in_file_name)
+		os.remove(out_file_name)
 	except Exception as e:
-		print(e)
+		app.logger.exception(e)
 		compiled_code = ''
-
-	os.remove(in_file_name)
-	os.remove(out_file_name)
 
 	return jsonify({
 		'compiledCode': compiled_code,
