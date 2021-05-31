@@ -2,6 +2,10 @@
 
 * need to restructure the imports as there are problems with usage
 
+* add skeleton.html if none is present yet
+* fix views imports after adding new view
+* make an option for which apps we want to fix JS namespaces (not all need one)
+
 * need the common management commands
   
 * FIU

@@ -128,11 +128,19 @@ SCRIPT = safestring.mark_safe('''
 
 					Object.keys(document.styleSheets).forEach(function (sheetKey, index) {
 						var sheet = document.styleSheets[sheetKey],
-							rules = trimRules(sheet.rules),
-							fileName = sheet.href.split('/dist/')[1].split('?v=')[0],
-							contents = rules.join(''),
+							rules = [],
+							fileName = '',
+							contents = '',
 							body = new FormData(),
 							url = '{% url 'unu:optimize_client_code' %}';
+
+						if (!sheet.href) {
+							return;
+						}
+
+						rules = trimRules(sheet.rules);
+						fileName = sheet.href.split('/dist/')[1].split('?v=')[0];
+						contents = rules.join('');
 
 						body.append('cssFile', sheet.href.split('/dist/')[1].split('?v=')[0]);
 						body.append('cssContent', contents);
