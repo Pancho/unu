@@ -12,3 +12,4 @@ whoosh
 pyjwt
 pyyaml
 yamlordereddictloader
+slimit

@@ -14,7 +14,6 @@ if settings.DEBUG:
 		path('fix-models', views.fix_models.Controller.as_view(), name='fix_models'),
 		path('fix-urls', views.fix_urls.Controller.as_view(), name='fix_urls'),
 		path('fix-js-namespaces', views.fix_js_namespaces.Controller.as_view(), name='fix_js_namespaces'),
-		path('add-colsure-compiler', views.add_closure_compiler.Controller.as_view(), name='add_closure_compiler'),
 		path('new-view/<str:view>', views.new_view.Controller.as_view(), name='new_view'),
 		path('new-view/<str:view>/create', views.new_view_create.Controller.as_view(), name='new_view_create'),
 		path('get-apps', views.get_apps.Controller.as_view(), name='get_apps'),

@@ -1,4 +1,3 @@
-from . import add_closure_compiler
 from . import analyze
 from . import fiu
 from . import fiu_app
@@ -21,7 +20,6 @@ from . import toggle_template_static
 
 
 __all__ = [
-	'add_closure_compiler',
 	'analyze',
 	'fiu',
 	'fiu_app',

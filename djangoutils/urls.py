@@ -11,6 +11,4 @@ urlpatterns = [
 	path('admin/', admin.site.urls),
 	# Unu views
 	path('unu/', include('unu.urls', namespace='unu')),
-	# Raw views
-	path('raw/', include('raw.urls', namespace='raw')),
 ]

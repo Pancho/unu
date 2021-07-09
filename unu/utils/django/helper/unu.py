@@ -37,11 +37,11 @@ def toggle_template_static():
 	new_skeleton = ''
 	with open(skeleton_path, 'r') as skeleton_file:
 		for line in skeleton_file.readlines():
-			if '</main>' in line:
+			if '{% block script %}{% endblock script %}' in line:
 				if '{% optimize %}' in line:
 					line = line.replace('{% optimize %}', '')
 				else:
-					line = line.replace('</main>', '</main>{% optimize %}')
+					line = line.replace('{% block script %}{% endblock script %}', '{% block script %}{% endblock script %}{% optimize %}')
 
 			new_skeleton += '{}'.format(line)
 

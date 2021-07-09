@@ -49,6 +49,7 @@ setup(
 		'pyjwt',
 		'pyyaml',
 		'yamlordereddictloader',
+		'slimit',
 	],
 	project_urls={
 		'Bug Reports': 'https://git.unuaondo.com/danijel.pancic/djangoutils/-/issues',

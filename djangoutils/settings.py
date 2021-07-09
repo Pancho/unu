@@ -14,7 +14,6 @@ INSTALLED_APPS = [
 	'django.contrib.sessions',
 	'django.contrib.messages',
 	'django.contrib.staticfiles',
-	'raw',
 	'unu',
 ]
 MIDDLEWARE = [
@@ -32,7 +31,6 @@ TEMPLATES = [
 		'BACKEND': 'django.template.backends.django.DjangoTemplates',
 		'DIRS': [
 			os.path.join(BASE_DIR, 'unu/templates/'),
-			os.path.join(BASE_DIR, 'raw/templates/'),
 		],
 		'APP_DIRS': True,
 		'OPTIONS': {
@@ -117,11 +115,6 @@ LOGGING = {
 		'django.request': {
 			'handlers': ['default_file'],
 			'level': 'WARNING',
-			'propagate': True,
-		},
-		'raw': {
-			'handlers': ['console', 'default_file'],
-			'level': 'DEBUG',
 			'propagate': True,
 		},
 		'unu': {
