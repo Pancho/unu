@@ -22,4 +22,4 @@ def encode(user_id, expire_seconds=3600):
 	return jwt.encode({
 		'id': user_id,
 		'exp': (timezone.now() + datetime.timedelta(seconds=expire_seconds))
-	}, settings.SECRET_KEY, 'HS256').decode('utf-8')
+	}, settings.SECRET_KEY, 'HS256')
