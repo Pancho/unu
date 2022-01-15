@@ -7,7 +7,6 @@ from . import views
 # File modules
 from . import ip
 from . import jwt
-from . import mongo
 
 
 __all__ = [
@@ -20,5 +19,4 @@ __all__ = [
 	# File modules
 	'ip',
 	'jwt',
-	'mongo',
 ]
