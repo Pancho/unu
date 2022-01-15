@@ -1,8 +1,8 @@
-from django.utils.translation import LANGUAGE_COOKIE_NAME
+from django.conf import settings
 
 
 def execute(request):
-	language = request.cookies.get(LANGUAGE_COOKIE_NAME)
+	language = request.cookies.get(settings.LANGUAGE_COOKIE_NAME)
 
 	if language is None or language.strip() == '':
 		language = 'en'
