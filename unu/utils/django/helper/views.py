@@ -16,25 +16,25 @@ def fix_views_imports(context):
 	log = []
 
 	app = context.get('app')
-	log.append('Fixing imports for views in app {}'.format(app))
-	if os.path.isdir('{}/{}/views'.format(settings.UNU_PROJECT_ROOT, app)):
+	log.append(f'Fixing imports for views in app {app}')
+	if os.path.isdir(f'{settings.UNU_PROJECT_ROOT}/{app}/views'):
 		file_names = []
-		for file in os.listdir('{}/{}/views'.format(settings.UNU_PROJECT_ROOT, app)):
+		for file in os.listdir(f'{settings.UNU_PROJECT_ROOT}/{app}/views'):
 			if file.endswith('.py') and '__init__.py' not in file:
 				file_names.append(file.replace('.py', ''))
 
-		with open('{}/{}/views/__init__.py'.format(settings.UNU_PROJECT_ROOT, app), 'w') as file:
+		with open(f'{settings.UNU_PROJECT_ROOT}/{app}/views/__init__.py', 'w') as file:
 			for module_name in file_names:
-				file.write('from . import {}\n'.format(module_name))
+				file.write(f'from . import {module_name}\n')
 			file.write('\n\n')
 			file.write('__all__ = [\n')
 			for module_name in file_names:
-				file.write('\t\'{}\',\n'.format(module_name))
+				file.write(f'\t\'{module_name}\',\n')
 			file.write(']\n')
 	else:
-		raise Exception('Folder views does not exist for the app {}. Fix the app first.'.format(app))
+		raise Exception(f'Folder views does not exist for the app {app}. Fix the app first.')
 
-	log.append('Imports for views in app {} fixed.'.format(app))
+	log.append(f'Imports for views in app {app} fixed.')
 
 	return log
 
@@ -42,29 +42,26 @@ def fix_views_imports(context):
 def fix_forms_imports(context):
 	log = []
 
-	forms_folder = '{}/{}/forms'.format(
-		settings.UNU_PROJECT_ROOT,
-		context.get('app')
-	)
+	forms_folder = f'''{settings.UNU_PROJECT_ROOT}/{context.get('app')}/forms'''
 
 	file_names = {}
 	for file in os.listdir(forms_folder):
 		if file.endswith('.py') and '__init__.py' not in file:
 			classes = []
-			with open('{}/{}'.format(forms_folder, file)) as form_file:
+			with open(f'{forms_folder}/{file}') as form_file:
 				for line in form_file.readlines():
 					if line.startswith('class '):
 						classes.append(line.split('(')[0].replace('class ', ''))
 			file_names[file.replace('.py', '')] = classes
 
-	with open('{}/__init__.py'.format(forms_folder), 'w') as file:
+	with open('{forms_folder}/__init__.py', 'w') as file:
 		for file_name, classes in file_names.items():
-			file.write('from .{} import {}\n'.format(file_name, ', '.join(classes)))
+			file.write(f'''from .{file_name} import {', '.join(classes)}\n''')
 
 		file.write('\n\n')
 		file.write('__all__ = [\n')
 		for file_name, classes in file_names.items():
-			file.write('\t{}, \n'.format(', '.join(['\'{}\''.format(name) for name in classes])))
+			file.write('\t{}, \n'.format(', '.join([f'\'{name}\'' for name in classes])))
 		file.write(']\n')
 
 	log.append('Form imports fixed')
@@ -75,24 +72,17 @@ def fix_forms_imports(context):
 def add_file_to_views(context):
 	log = []
 
-	if not os.path.isdir('{}/{}/views'.format(settings.UNU_PROJECT_ROOT, context.get('app'))):
-		raise Exception('{}/{}/views is not a folder. Fix app "{}" before you continue.'.format(
-			settings.UNU_PROJECT_ROOT,
-			context.get('app'),
-			context.get('app')
-		))
+	if not os.path.isdir(f'''{settings.UNU_PROJECT_ROOT}/{context.get('app')}/views'''):
+		raise Exception(f'''{settings.UNU_PROJECT_ROOT}/{context.get('app')}/views is not a folder. Fix app "{context.get('app')}" before you continue.''')
 
-	if os.path.isfile('{}/{}/views/{}.py'.format(settings.UNU_PROJECT_ROOT, context.get('app'), context.get('view_name'))):
-		raise Exception('File {}/{}/views/{}.py already exists. Will not create new view.'.format(
-			settings.UNU_PROJECT_ROOT, context.get('app'),
-			context.get('view_name')
-		))
+	if os.path.isfile(f'''{settings.UNU_PROJECT_ROOT}/{context.get('app')}/views/{context.get('view_name')}.py'''):
+		raise Exception(f'''File {settings.UNU_PROJECT_ROOT}/{context.get('app')}/views/{context.get('view_name')}.py already exists. Will not create new view.''')
 
-	log.append('Creating file for view {}'.format(context.get('view_name')))
-	with open('{}/{}/views/{}.py'.format(settings.UNU_PROJECT_ROOT, context.get('app'), context.get('view_name')), 'w') as file:
-		file.write(loader.render_to_string('unu/code/views/{}.py'.format(context.get('view_template')), context))
+	log.append(f'''Creating file for view {context.get('view_name')}''')
+	with open(f'''{settings.UNU_PROJECT_ROOT}/{context.get('app')}/views/{context.get('view_name')}.py''', 'w') as file:
+		file.write(loader.render_to_string(f'''unu/code/views/{context.get('view_template')}.py''', context))
 
-	log.append('File {}/{}/views/{}.py for view created.'.format(settings.UNU_PROJECT_ROOT, context.get('app'), context.get('view_name')))
+	log.append(f'''File {settings.UNU_PROJECT_ROOT}/{context.get('app')}/views/{context.get('view_name')}.py for view created.''')
 
 	return log
 
@@ -105,41 +95,27 @@ def add_url(context):
 	kwarg_name = context.get('kwarg_name')
 	kwarg_type = context.get('kwarg_type')
 
-	log.append('Adding url for view {} in app {}'.format(view_name, app))
+	log.append(f'Adding url for view {view_name} in app {app}')
 
-	with open('{}/{}/urls.py'.format(settings.UNU_PROJECT_ROOT, app), 'r') as f:
+	with open(f'{settings.UNU_PROJECT_ROOT}/{app}/urls.py', 'r') as f:
 		urls_content = f.read()
 
 	urls_split = urls_content.split(']')
 	url = context.get('url')
 
 	if kwarg_name is not None:
-		url = '{}/<{}{}>'.format(
-			url,
-			'{}:'.format(kwarg_type) if kwarg_type is not None else '',
-			kwarg_name,
-		)
+		url = f'''{url}/<{f'{kwarg_type}:' if kwarg_type is not None else ''}{kwarg_name}>'''
 
-	url_path = '\tpath(\'{}\', views.{}.Controller.as_view(), name=\'{}\'),'.format(
-		url,
-		view_name,
-		view_name,
-	)
+	url_path = f'\tpath(\'{url}\', views.{view_name}.Controller.as_view(), name=\'{view_name}\'),'
 
-	with open('{}/urls.py'.format(app), 'r') as file:
+	with open(f'{app}/urls.py', 'r') as file:
 		if url_path in file.read():
-			raise Exception('Will not add an existing url to urls.py for app {}.'.format(app))
+			raise Exception(f'Will not add an existing url to urls.py for app {app}.')
 
-	with open('{}/urls.py'.format(app), 'w') as file:
-		file.write('{}{}\n]\n'.format(
-			urls_split[0],
-			url_path,
-		))
+	with open(f'{app}/urls.py', 'w') as file:
+		file.write(f'{urls_split[0]}{url_path}\n]\n')
 
-	log.append('Added new path to urls.py for app {}: {}'.format(
-		app,
-		url_path
-	))
+	log.append(f'Added new path to urls.py for app {app}: {url_path}')
 
 	return log
 
@@ -147,30 +123,23 @@ def add_url(context):
 def add_template(context):
 	log = []
 
-	log.append('Adding template for view {}.'.format(context.get('view_name')))
+	log.append(f'''Adding template for view {context.get('view_name')}.''')
 
-	folder_path = '{}/{}/templates/{}/pages'.format(
-		settings.UNU_PROJECT_ROOT,
-		context.get('app'),
-		context.get('app')
-	)
+	folder_path = f'''{settings.UNU_PROJECT_ROOT}/{context.get('app')}/templates/{context.get('app')}/pages'''
 
 	if not os.path.isdir(folder_path):
-		log.append('Creating folder {}.'.format(folder_path))
+		log.append(f'Creating folder {folder_path}.')
 		os.makedirs(folder_path)
 
-	template_path = '{}/{}.html'.format(
-		folder_path,
-		context.get('view_name'),
-	)
+	template_path = f'''{folder_path}/{context.get('view_name')}.html'''
 
 	if os.path.isfile(template_path):
-		raise Exception('Template at {} already exists.'.format(template_path))
+		raise Exception(f'Template at {template_path} already exists.')
 
 	with open(template_path, 'w') as file:
 		file.write(loader.render_to_string('unu/code/views/generic_view.html', context))
 
-	log.append('Template for view {} added.'.format(context.get('view_name')))
+	log.append(f'''Template for view {context.get('view_name')} added.''')
 
 	return log
 
@@ -178,46 +147,34 @@ def add_template(context):
 def add_static_files(context):
 	log = []
 
-	js_file_path = '{}/{}js/{}.js'.format(
-		settings.UNU_PROJECT_ROOT,
-		settings.UNU_FRONTEND_MEDIA_PATH,
-		context.get('static_path'),
-	)
+	js_file_path = f'''{settings.UNU_PROJECT_ROOT}/{settings.UNU_FRONTEND_MEDIA_PATH}js/{context.get('static_path')}.js'''
 
-	log.append('Adding JS file for view {}.'.format(context.get('view_name')))
+	log.append(f'''Adding JS file for view {context.get('view_name')}.''')
 
 	if os.path.isfile(js_file_path):
-		raise Exception('JS at {} already exists.'.format(js_file_path))
+		raise Exception(f'JS at {js_file_path} already exists.')
 
 	with open(js_file_path, 'w') as file:
 		file.write(loader.render_to_string('unu/code/views/generic_view.js', context))
 
-	log.append('JS file for view {} added.'.format(context.get('view_name')))
-	log.append('Adding CSS file for view {}.'.format(context.get('view_name')))
+	log.append(f'''JS file for view {context.get('view_name')} added.''')
+	log.append(f'''Adding CSS file for view {context.get('view_name')}.''')
 
-	css_folder = '{}/{}css/{}'.format(
-		settings.UNU_PROJECT_ROOT,
-		settings.UNU_FRONTEND_MEDIA_PATH,
-		context.get('app')
-	)
+	css_folder = f'''{settings.UNU_PROJECT_ROOT}/{settings.UNU_FRONTEND_MEDIA_PATH}css/{context.get('app')}'''
 
 	if not os.path.isdir(css_folder):
 		os.mkdir(css_folder)
-		log.append('Created folder {}.'.format(css_folder))
+		log.append(f'Created folder {css_folder}.')
 
-	css_file_path = '{}/{}css/{}.css'.format(
-		settings.UNU_PROJECT_ROOT,
-		settings.UNU_FRONTEND_MEDIA_PATH,
-		context.get('static_path'),
-	)
+	css_file_path = f'''{settings.UNU_PROJECT_ROOT}/{settings.UNU_FRONTEND_MEDIA_PATH}css/{context.get('static_path')}.css'''
 
 	if os.path.isfile(css_file_path):
-		raise Exception('CSS at {} already exists.'.format(css_file_path))
+		raise Exception(f'CSS at {css_file_path} already exists.')
 
 	with open(css_file_path, 'w') as file:
 		file.write(loader.render_to_string('unu/code/views/generic_view.css', context))
 
-	log.append('CSS file for view {} added.'.format(context.get('view_name')))
+	log.append(f'''CSS file for view {context.get('view_name')} added.''')
 
 	return log
 
@@ -225,24 +182,15 @@ def add_static_files(context):
 def add_form(context):
 	log = []
 
-	forms_path = '{}/{}/forms'.format(
-		settings.UNU_PROJECT_ROOT,
-		context.get('app')
-	)
+	forms_path = f'''{settings.UNU_PROJECT_ROOT}/{context.get('app')}/forms'''
 	if not os.path.isdir(forms_path):
 		os.mkdir(forms_path)
 
-	form_path = '{}/{}.py'.format(
-		forms_path,
-		context.get('view_name')
-	)
+	form_path = f'''{forms_path}/{context.get('view_name')}.py'''
 	with open(form_path, 'w') as file:
 		file.write(loader.render_to_string('unu/code/views/form.py', context))
 
-	log.append('Added form class {} to file {}.'.format(
-		context.get('form'),
-		forms_path
-	))
+	log.append(f'''Added form class {context.get('form')} to file {forms_path}.''')
 
 	return log
 
@@ -330,7 +278,7 @@ VIEW_CONFIG = {
 		'view_template': 'view',
 		'view_name': text.slugify(context.get('name')).replace('-', '_'),
 		'url': text.slugify(context.get('name').replace('_', ' ')),
-		'http_methods': ', '.join(['\'{}\''.format(method.lower()) for method in context.get('methods')]),
+		'http_methods': ', '.join([f'\'{method.lower()}\'' for method in context.get('methods')]),
 		'class_extensions': ', '.join([
 			CONTROLLER_MIXINS.get(mixin).get('module_path') for mixin in context.get('mixins')
 		]),
@@ -385,11 +333,8 @@ TEMPLATE_VIEW_CONFIG = {
 				*[CONTROLLER_MIXINS.get(mixin).get('required_imports') for mixin in context.get('mixins')]
 			)
 		),
-		'template_name': '{}/pages/{}.html'.format(
-			context.get('app'),
-			text.slugify(context.get('name')).replace('-', '_'),
-		),
-		'static_path': '{}/{}'.format(text.slugify(context.get('app')), text.slugify(context.get('name'))),
+		'template_name': f'''{context.get('app')}/pages/{text.slugify(context.get('name')).replace('-', '_')}.html''',
+		'static_path': f'''{text.slugify(context.get('app'))}/{text.slugify(context.get('name'))}''',
 		'js_includes': ['{}/{}.js'.format(
 			'-'.join(part.lower() for part in context.get('app').split('_')),
 			'-'.join(part.lower() for part in context.get('app').split('_'))
@@ -515,13 +460,10 @@ FORM_VIEW_CONFIG = {
 				*[CONTROLLER_MIXINS.get(mixin).get('required_imports') for mixin in context.get('mixins')]
 			)
 		),
-		'form': '{}Form'.format(''.join([part.capitalize() for part in text.slugify(context.get('name')).split('-')])),
-		'success_pattern': '{}:{}'.format(context.get('app'), text.slugify(context.get('name')).replace('-', '_')),
-		'template_name': '{}/pages/{}.html'.format(
-			context.get('app'),
-			text.slugify(context.get('name')).replace('-', '_'),
-		),
-		'static_path': '{}/{}'.format(text.slugify(context.get('app')), text.slugify(context.get('name'))),
+		'form': f'''{''.join([part.capitalize() for part in text.slugify(context.get('name')).split('-')])}Form''',
+		'success_pattern': f'''{context.get('app')}:{text.slugify(context.get('name')).replace('-', '_')}''',
+		'template_name': f'''{context.get('app')}/pages/{text.slugify(context.get('name')).replace('-', '_')}.html''',
+		'static_path': f'''{text.slugify(context.get('app'))}/{text.slugify(context.get('name'))}''',
 		'js_includes': ['{}/{}.js'.format(
 			'-'.join(part.lower() for part in context.get('app').split('_')),
 			'-'.join(part.lower() for part in context.get('app').split('_'))
@@ -563,7 +505,7 @@ CHOICES = collections.OrderedDict({
 
 
 def get_new(view, request):
-	log = ['Creating new view {}.'.format(view)]
+	log = [f'Creating new view {view}.']
 
 	try:
 		config = CHOICES.get(view).get('config')
@@ -577,7 +519,7 @@ def get_new(view, request):
 		for method in config.get('process'):
 			log.extend(method(context))
 	except Exception as e:
-		logger.exception('Could not finish creating a view {}.'.format(view))
-		log.append('Exception "{}" happened. See application logs for more information'.format(str(e)))
+		logger.exception(f'Could not finish creating a view {view}.')
+		log.append(f'Exception "{str(e)}" happened. See application logs for more information')
 
 	return log

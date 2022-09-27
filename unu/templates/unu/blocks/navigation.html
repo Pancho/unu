@@ -9,7 +9,7 @@
 					<a href="{% url 'unu:fiu' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fab fa-js-square"></span> Fiu Apps</a>
 				</li>{% for fiu_app in fiu_apps %}
 				<li>
-					<a href="{% url 'unu:fiu_app' fiu_app.slug %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-sitemap"></span> {{ fiu_app.name }}</a>
+					<a href="{% url 'unu:fiu_app' fiu_app %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-sitemap"></span> {{ fiu_app }}</a>
 				</li>{% endfor %}
 			</ol>
 		</nav>

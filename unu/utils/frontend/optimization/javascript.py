@@ -2,7 +2,8 @@ import os
 import logging
 
 
-import slimit
+from calmjs.parse import es5
+from calmjs.parse.unparsers.es5 import minify_print
 
 
 import unu
@@ -16,7 +17,7 @@ def update_file(file_name):
 
 
 def optimize(js):
-	return slimit.minify(js, mangle=True, mangle_toplevel=False), True
+	return minify_print(es5(js), obfuscate=True, obfuscate_globals=False), True
 
 
 def minify(js):

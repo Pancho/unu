@@ -49,7 +49,7 @@ setup(
 		'pyjwt',
 		'pyyaml',
 		'yamlordereddictloader',
-		'slimit',
+		'calmjs.parse',
 	],
 	project_urls={
 		'Bug Reports': 'https://git.unuaondo.com/danijel.pancic/djangoutils/-/issues',

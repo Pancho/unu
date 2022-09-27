@@ -16,4 +16,4 @@ def str_remove(value, remove):
 
 @register.filter(name='concat')
 def concat(value, addition):
-	return '{}{}'.format(value, addition)
+	return f'{value}{addition}'

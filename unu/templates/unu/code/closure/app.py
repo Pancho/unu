@@ -15,8 +15,8 @@ app = Flask(__name__)
 def hello():
 	js_code = request.form.get('js_code')
 	compilation_level = request.form.get('compilation_level', 'SIMPLE_OPTIMIZATIONS')
-	in_file_name = '{}.js'.format(str(uuid.uuid4()))
-	out_file_name = '{}.js'.format(str(uuid.uuid4()))
+	in_file_name = f'{str(uuid.uuid4())}.js'
+	out_file_name = f'{str(uuid.uuid4())}.js'
 
 	with open(in_file_name, 'w') as file:
 		file.write(js_code)

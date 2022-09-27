@@ -169,10 +169,7 @@ def handle_imports(css):
 	for import_statement in imports:
 		css = css.replace(import_statement, '')
 
-	return '{}{}'.format(
-		''.join(imports),
-		css
-	)
+	return f'''{''.join(imports)}{css}'''
 
 
 def minify(css, wrap=None):

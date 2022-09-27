@@ -1,7 +1,7 @@
 django
 gunicorn
 psycopg2-binary
-python3-memcached
+pymemcache
 requests
 beautifulsoup4
 html5lib
@@ -12,4 +12,4 @@ whoosh
 pyjwt
 pyyaml
 yamlordereddictloader
-slimit
+calmjs.parse

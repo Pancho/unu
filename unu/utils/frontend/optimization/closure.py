@@ -24,15 +24,15 @@ def fix_list_indentation(yaml_text):
 	result = ''
 	for line in yaml_text.split('\n'):
 		if '- ' in line:
-			line = '  {}'.format(line)
+			line = f'  {line}'
 
-		result = '{}\n{}'.format(result, line)
+		result = f'{result}\n{line}'
 
 	return result
 
 
 def get_docker_compose():
-	with open('{}/docker-compose.yml'.format(settings.UNU_PROJECT_ROOT), 'r') as file:
+	with open(f'{settings.UNU_PROJECT_ROOT}/docker-compose.yml', 'r') as file:
 		return file.read()
 
 
@@ -49,20 +49,20 @@ def add_closure_compiler():
 		services.update(TEMPLATE)
 		services = OrderedDict(sorted(services.items()))
 		docker_compose['services'] = services
-		with open('{}/docker-compose.yml'.format(settings.UNU_PROJECT_ROOT), 'w') as file:
+		with open(f'{settings.UNU_PROJECT_ROOT}/docker-compose.yml', 'w') as file:
 			file.write(fix_list_indentation(yaml.dump(docker_compose, Dumper=yamlordereddictloader.Dumper, width=1024, indent=2)))
 
 		# Ensure folders
-		if not os.path.isdir('{}/tools'.format(settings.UNU_PROJECT_ROOT)):
-			os.mkdir('{}/tools'.format(settings.UNU_PROJECT_ROOT))
-		if not os.path.isdir('{}/tools/closure'.format(settings.UNU_PROJECT_ROOT)):
-			os.mkdir('{}/tools/closure'.format(settings.UNU_PROJECT_ROOT))
+		if not os.path.isdir(f'{settings.UNU_PROJECT_ROOT}/tools'):
+			os.mkdir(f'{settings.UNU_PROJECT_ROOT}/tools')
+		if not os.path.isdir(f'{settings.UNU_PROJECT_ROOT}/tools/closure'):
+			os.mkdir(f'{settings.UNU_PROJECT_ROOT}/tools/closure')
 
 		# Render the template files
-		with open('{}/tools/closure/Dockerfile'.format(settings.UNU_PROJECT_ROOT), 'w') as file:
+		with open(f'{settings.UNU_PROJECT_ROOT}/tools/closure/Dockerfile', 'w') as file:
 			file.write(loader.render_to_string('unu/code/closure/Dockerfile', {}))
 
-		with open('{}/tools/closure/app.py'.format(settings.UNU_PROJECT_ROOT), 'w') as file:
+		with open(f'{settings.UNU_PROJECT_ROOT}/tools/closure/app.py', 'w') as file:
 			file.write(loader.render_to_string('unu/code/closure/app.py', {}))
 
 

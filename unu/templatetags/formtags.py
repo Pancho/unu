@@ -18,7 +18,7 @@ def print_classes(value):
 	if 'class' in value.field.widget.attrs:
 		classes.append(value.field.widget.attrs['class'])
 	if len(classes):
-		return mark_safe(' class="{}"'.format(' '.join(classes)))
+		return mark_safe(f''' class="{' '.join(classes)}"''')
 	else:
 		return ''
 

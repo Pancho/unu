@@ -23,7 +23,7 @@ class Controller(views.View, unu.utils.views.mixins.debug.DebugOnlyMixin):
 			namespace_tuple = namespace_dict.get(app)
 			if namespace_tuple is not None:
 				resolver = namespace_tuple[1]
-				urls.extend(['{}:{}'.format(app, pattern.name) for pattern in resolver.url_patterns])
+				urls.extend([f'{app}:{pattern.name}' for pattern in resolver.url_patterns])
 
 		context = {
 			'status': 'ok',

@@ -1,17 +1,8 @@
-import { App } from '../fiu/js/app.js';{% if logger_config %}
-import { LogLevels } from '../fiu/js/logging.js';{% endif %}{% for class_name, class_path in imports.items %}
-import { {{ class_name }} } from '.{{ class_path }}';{% endfor %}
+import App from '../fiu/js/app.js';
 
-class {{ app_name }} extends App {
-	constructor(config) {
-		super(
-			config,
-		);
-	}
-}
-
-new {{ app_name }}({
+new App({
 	routeRoot: '{{ router_root_url }}',
+	staticRoot: '{{ static_root_url }}',
 	homePage: {
 		component: {{ index_page }},
 	},
@@ -27,7 +18,7 @@ new {{ app_name }}({
 		},{% endfor %}
 	],{% if authentication_url %}
 	authenticationUrl: '{{ authentication_url }}',{% endif %}
-	authenticationClass: {% if authentication_class %}{{ authentication_class }}{% else %}null{% endif %},
+	authenticationModule: {% if authentication_module %}{{ authentication_module }}{% else %}null{% endif %},
 	providers: [{% for provider in providers %}
 		{{ provider }},{% endfor %}
 	],

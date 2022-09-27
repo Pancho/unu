@@ -17,10 +17,7 @@ def get_fiu_files():
 	zip_file = zipfile.ZipFile(io.BytesIO(response.content))
 	for zip_info in zip_file.filelist:
 		if '/fiu/js/' in zip_info.filename and zip_info.filename.endswith('.js') or '/fiu/css/' in zip_info.filename and zip_info.filename.endswith('.css'):
-			target_file_name = '{}fiu/{}'.format(
-				settings.UNU_FRONTEND_MEDIA_PATH,
-				zip_info.filename.split('fiu/')[1]
-			)
+			target_file_name = f'''{settings.UNU_FRONTEND_MEDIA_PATH}fiu/{zip_info.filename.split('fiu/')[1]}'''
 			target_folder_name = '/'.join(target_file_name.split('/')[:-1])
 			if not os.path.exists(target_folder_name):
 				os.makedirs(target_folder_name)
@@ -34,7 +31,7 @@ def create_fiu_app(app_name, router_root_url, http_endpoint_stub, enable_logging
 
 	if app_name in ['css', 'dist', 'fiu', 'img', 'js', 'webfonts']:
 		log.append('Appending "-app" to the app\'s name, since it\'s using a reserved word as a name')
-		app_name = '{} app'.format(app_name)
+		app_name = f'{app_name}-app'
 
 	index_page_class, index_page_path, index_page_log = unu.utils.frontend.fiu.helper.create_fiu_page(
 		'index',
@@ -59,25 +56,20 @@ def create_fiu_app(app_name, router_root_url, http_endpoint_stub, enable_logging
 	log.extend(not_found_page_log)
 
 	create_kwargs = {
-		'app_name': app_name,
 		'router_root_url': router_root_url,
 		'index_page': index_page_class,
 		'not_found_page': not_found_page_class,
 		'routes': [],
 		'root_stylesheets': [
-			'/{}fiu/css/meta'.format(settings.UNU_FRONTEND_MEDIA_PATH),
-			'/{}fiu/css/normalize'.format(settings.UNU_FRONTEND_MEDIA_PATH),
+			f'/{settings.UNU_FRONTEND_MEDIA_PATH}fiu/css/meta',
+			f'/{settings.UNU_FRONTEND_MEDIA_PATH}fiu/css/normalize',
 		],
 		'authentication_url': None,
 		'authentication_class': None,
 		'http_endpoint_stub': http_endpoint_stub,
 		'on_app_ready': None,
 		'providers': [],
-		'logger_config': 'level: LogLevels.TRACE,' if enable_logging else '',
-		'imports': {
-			index_page_class: index_page_path,
-			not_found_page_class: not_found_page_path,
-		},
+		'logger_config': 'level: \'trace\',' if enable_logging else '',
 	}
 
 	index_log = unu.utils.frontend.fiu.helper.create_fiu_index(**create_kwargs)
@@ -136,15 +128,12 @@ def create_fiu_page(app_folder, component_name, url_pattern, use_store):
 		'path': url_pattern,
 	}))
 	if use_store:
-		index['providers'].append('{}.STORE_PROVIDER'.format(page_class))
-		log.append('Adding provider {}.STORE_PROVIDER'.format(page_class))
+		index['providers'].append(f'{page_class}.STORE_PROVIDER')
+		log.append(f'Adding provider {page_class}.STORE_PROVIDER')
 	index['imports'].update({
 		page_class: page_path,
 	})
-	log.append('Adding import {}:{}'.format(
-		page_class,
-		page_path,
-	))
+	log.append(f'Adding import {page_class}:{page_path}')
 
 	index_log = unu.utils.frontend.fiu.helper.create_fiu_index(**index)
 	log.extend(index_log)

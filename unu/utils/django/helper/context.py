@@ -11,15 +11,15 @@ logger = logging.getLogger(__name__)
 
 
 def has_models(app):
-	return os.path.isdir('{}/{}/models'.format(settings.UNU_PROJECT_ROOT, app))
+	return os.path.isdir(f'{settings.UNU_PROJECT_ROOT}/{app}/models')
 
 
 def get_apps(with_models=False):
 	apps = []
 
 	for folder in os.listdir(path=settings.UNU_PROJECT_ROOT):
-		if os.path.isdir(folder) and os.path.isfile('{}/apps.py'.format(folder)):
-			with open('{}/apps.py'.format(folder)) as file:
+		if os.path.isdir(folder) and os.path.isfile(f'{folder}/apps.py'):
+			with open(f'{folder}/apps.py') as file:
 				contents = file.read()
 
 				if 'name = ' in contents:
@@ -34,4 +34,4 @@ def get_apps(with_models=False):
 
 
 def get_models(app):
-	return [name for name, obj in inspect.getmembers(sys.modules['{}.models'.format(app)]) if inspect.isclass(obj)]
+	return [name for name, obj in inspect.getmembers(sys.modules[f'{app}.models']) if inspect.isclass(obj)]

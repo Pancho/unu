@@ -19,17 +19,17 @@ def optimize_file(file_name, contents, optimize_function=None):
 	else:
 		optimized_contents = contents
 
-	with open('{}dist/{}'.format(settings.UNU_FRONTEND_MEDIA_PATH, optimized_file_name), 'w') as file:
+	with open(f'{settings.UNU_FRONTEND_MEDIA_PATH}dist/{optimized_file_name}', 'w') as file:
 		file.write(optimized_contents)
 
 	return success
 
 
 def update_file(file_name, extension, minify_function):
-	if not os.path.exists('{}dist/'.format(settings.UNU_FRONTEND_MEDIA_PATH)):
-		os.mkdir('{}dist/'.format(settings.UNU_FRONTEND_MEDIA_PATH))
+	if not os.path.exists(f'{settings.UNU_FRONTEND_MEDIA_PATH}dist/'):
+		os.mkdir(f'{settings.UNU_FRONTEND_MEDIA_PATH}dist/')
 
-	file_path = '{}{}/{}.{}'.format(settings.UNU_FRONTEND_MEDIA_PATH, extension, file_name, extension)
+	file_path = f'{settings.UNU_FRONTEND_MEDIA_PATH}{extension}/{file_name}.{extension}'
 	with open(file_path, 'r') as file:
 		file_contents = file.read()
 
@@ -41,7 +41,7 @@ def update_file(file_name, extension, minify_function):
 		cleaned_file
 	))
 
-	with open('{}dist/{}.{}'.format(settings.UNU_FRONTEND_MEDIA_PATH, file_name.replace('/', '-'), extension), 'w') as file:
+	with open(f'''{settings.UNU_FRONTEND_MEDIA_PATH}dist/{file_name.replace('/', '-')}.{extension}''', 'w') as file:
 		file.write(dist_file_contents)
 
 
@@ -55,8 +55,8 @@ def clean_file(file_contents, extension):
 	result = ''
 
 	for line in file_contents.split('\n'):
-		if '{} include:'.format(EXTENSION_COMMENTS.get(extension)) not in line:
-			result = '{}\n{}'.format(result, line)
+		if f'{EXTENSION_COMMENTS.get(extension)} include:' not in line:
+			result = f'{result}\n{line}'
 
 	return result
 
@@ -65,7 +65,7 @@ def gather_includes(file_contents, extension):
 	result = []
 
 	for line in file_contents.split('\n'):
-		if '{} include:'.format(EXTENSION_COMMENTS.get(extension)) in line:
+		if f'{EXTENSION_COMMENTS.get(extension)} include:' in line:
 			include = line.split('include:')[1].split(' ')[0]
 			with open(include, 'r') as file:
 				contents = file.read()

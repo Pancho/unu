@@ -19,20 +19,20 @@ def fix_views():
 	apps = unu.utils.django.helper.context.get_apps()
 
 	for app in apps:
-		if os.path.isfile('{}/{}/views.py'.format(settings.UNU_PROJECT_ROOT, app)) and not os.path.isdir('{}/{}/views'.format(settings.UNU_PROJECT_ROOT, app)):
-			os.remove('{}/{}/views.py'.format(settings.UNU_PROJECT_ROOT, app))
-			os.mkdir('{}/{}/views'.format(settings.UNU_PROJECT_ROOT, app))
-			with open('{}/{}/views/__init__.py'.format(settings.UNU_PROJECT_ROOT, app), 'w') as file:
+		if os.path.isfile(f'{settings.UNU_PROJECT_ROOT}/{app}/views.py') and not os.path.isdir(f'{settings.UNU_PROJECT_ROOT}/{app}/views'):
+			os.remove(f'{settings.UNU_PROJECT_ROOT}/{app}/views.py')
+			os.mkdir(f'{settings.UNU_PROJECT_ROOT}/{app}/views')
+			with open(f'{settings.UNU_PROJECT_ROOT}/{app}/views/__init__.py', 'w') as file:
 				file.write('')
 			fixed.append(app)
 		else:
 			skipped.append(app)
 
 	if len(fixed) > 0:
-		result.append('Views for app{} {} fixed.'.format('s' if len(fixed) > 1 else '', ', '.join(fixed)))
+		result.append(f'''Views for app{'s' if len(fixed) > 1 else ''} {', '.join(fixed)} fixed.''')
 
 	if len(skipped) > 0:
-		result.append('Views for app{} {} skipped'.format('s' if len(skipped) > 1 else '', ', '.join(skipped)))
+		result.append(f'''Views for app{'s' if len(skipped) > 1 else ''} {', '.join(skipped)} skipped.''')
 
 	return result
 
@@ -44,26 +44,23 @@ def fix_models():
 	apps = unu.utils.django.helper.context.get_apps()
 
 	for app in apps:
-		if os.path.isfile('{}/{}/models.py'.format(settings.UNU_PROJECT_ROOT, app)) and not os.path.isdir('{}/models'.format(settings.UNU_PROJECT_ROOT, app)):
-			os.remove('{}/{}/models.py'.format(settings.UNU_PROJECT_ROOT, app))
-			os.mkdir('{}/{}/models'.format(settings.UNU_PROJECT_ROOT, app))
-			with open('{}/{}/models/__init__.py'.format(settings.UNU_PROJECT_ROOT, app), 'w') as file:
+		if os.path.isfile(f'{settings.UNU_PROJECT_ROOT}/{app}/models.py') and not os.path.isdir(f'{settings.UNU_PROJECT_ROOT}/{app}/models'):
+			os.remove(f'{settings.UNU_PROJECT_ROOT}/{app}/models.py')
+			os.mkdir(f'{settings.UNU_PROJECT_ROOT}/{app}/models')
+			with open(f'{settings.UNU_PROJECT_ROOT}/{app}/models/__init__.py', 'w') as file:
 				file.write('')
 			fixed.append(app)
 		else:
 			skipped.append(app)
 
 	if len(fixed) > 0:
-		result.append('Models for app{} {} fixed.'.format('s' if len(fixed) > 1 else '', ', '.join(fixed)))
+		result.append(f'''Models for app{'s' if len(fixed) > 1 else ''} {', '.join(fixed)} fixed.''')
 
 	if len(skipped) > 0:
-		result.append('Models for app{} {} skipped'.format('s' if len(skipped) > 1 else '', ', '.join(skipped)))
+		result.append(f'''Models for app{'s' if len(skipped) > 1 else ''} {', '.join(skipped)} skipped.''')
 
 	for app in apps:
-		models_folder = '{}/{}/models'.format(
-			settings.UNU_PROJECT_ROOT,
-			app
-		)
+		models_folder = f'{settings.UNU_PROJECT_ROOT}/{app}/models'
 
 		if not os.path.isdir(models_folder):
 			continue
@@ -72,20 +69,20 @@ def fix_models():
 		for file in os.listdir(models_folder):
 			if file.endswith('.py') and '__init__.py' not in file:
 				classes = []
-				with open('{}/{}'.format(models_folder, file)) as form_file:
+				with open(f'{models_folder}/{file}') as form_file:
 					for line in form_file.readlines():
 						if line.startswith('class '):
 							classes.append(line.split('(')[0].replace('class ', ''))
 				file_names[file.replace('.py', '')] = classes
 
-		with open('{}/__init__.py'.format(models_folder), 'w') as file:
+		with open(f'{models_folder}/__init__.py', 'w') as file:
 			for file_name, classes in file_names.items():
-				file.write('from .{} import {}\n'.format(file_name, ', '.join(classes)))
+				file.write(f'''from .{file_name} import {', '.join(classes)}\n''')
 
 			file.write('\n\n')
 			file.write('__all__ = [\n')
 			for file_name, classes in file_names.items():
-				file.write('\t{}, \n'.format(', '.join(['\'{}\''.format(name) for name in classes])))
+				file.write('\t{}, \n'.format(', '.join([f'\'{name}\'' for name in classes])))
 			file.write(']\n')
 
 	result.append('Fixed imports for all models.')
@@ -100,8 +97,8 @@ def fix_urls():
 	apps = unu.utils.django.helper.context.get_apps()
 
 	for app in apps:
-		if not os.path.isfile('{}/{}/urls.py'.format(settings.UNU_PROJECT_ROOT, app)):
-			with open('{}/{}/urls.py'.format(settings.UNU_PROJECT_ROOT, app), 'w') as file:
+		if not os.path.isfile(f'{settings.UNU_PROJECT_ROOT}/{app}/urls.py'):
+			with open(f'{settings.UNU_PROJECT_ROOT}/{app}/urls.py', 'w') as file:
 				file.write(loader.render_to_string('unu/code/helper/urls.py', {
 					'app': app,
 				}))
@@ -110,10 +107,10 @@ def fix_urls():
 			skipped.append(app)
 
 	if len(fixed) > 0:
-		result.append('URLs for app{} {} fixed.'.format('s' if len(fixed) > 1 else '', ', '.join(fixed)))
+		result.append(f'''URLs for app{'s' if len(fixed) > 1 else ''} {', '.join(fixed)} fixed.''')
 
 	if len(skipped) > 0:
-		result.append('URLs for app{} {} skipped'.format('s' if len(skipped) > 1 else '', ', '.join(skipped)))
+		result.append(f'''URLs for app{'s' if len(skipped) > 1 else ''} {', '.join(skipped)} skipped.''')
 
 	return result
 
@@ -124,10 +121,7 @@ def fix_js_namespaces():
 	result = []
 	apps = unu.utils.django.helper.context.get_apps()
 
-	root_namespace_path = '{}/media/js/{}.js'.format(
-		settings.UNU_PROJECT_ROOT,
-		'-'.join(part.lower() for part in settings.UNU_PROJECT_NAME.split('_'))
-	)
+	root_namespace_path = f'''{settings.UNU_PROJECT_ROOT}/media/js/{'-'.join(part.lower() for part in settings.UNU_PROJECT_NAME.split('_'))}.js'''
 
 	if not os.path.isfile(root_namespace_path):
 		ctx = {
@@ -142,29 +136,19 @@ def fix_js_namespaces():
 		skipped.append('root')
 
 	for app in apps:
-		namespace_folder_path = '{}/media/js/{}'.format(
-			settings.UNU_PROJECT_ROOT,
-			'-'.join(part.lower() for part in app.split('_')),
-		)
+		namespace_folder_path = f'''{settings.UNU_PROJECT_ROOT}/media/js/{'-'.join(part.lower() for part in app.split('_'))}'''
 
 		if not os.path.isdir(namespace_folder_path):
-			result.append('Created folder for namespace {}'.format(app))
+			result.append(f'Created folder for namespace {app}')
 			os.mkdir(namespace_folder_path)
 
-		namespace_file_path = '{}/media/js/{}/{}.js'.format(
-			settings.UNU_PROJECT_ROOT,
-			'-'.join(part.lower() for part in app.split('_')),
-			'-'.join(part.lower() for part in app.split('_'))
-		)
+		namespace_file_path = f'''{settings.UNU_PROJECT_ROOT}/media/js/{'-'.join(part.lower() for part in app.split('_'))}/{'-'.join(part.lower() for part in app.split('_'))}.js'''
 
 		if not os.path.isfile(namespace_file_path):
 			ctx = {
 				'is_js_root': False,
-				'js_includes': ['{}.js'.format('-'.join(part.lower() for part in settings.UNU_PROJECT_NAME.split('_')))],
-				'js_namespace': '{}.{}'.format(
-					''.join(part.capitalize() for part in settings.UNU_PROJECT_NAME.split('_')),
-					''.join(part.capitalize() for part in app.split('_'))
-				)
+				'js_includes': [f'''{'-'.join(part.lower() for part in settings.UNU_PROJECT_NAME.split('_'))}.js'''],
+				'js_namespace': f'''{''.join(part.capitalize() for part in settings.UNU_PROJECT_NAME.split('_'))}.{''.join(part.capitalize() for part in app.split('_'))}'''
 			}
 
 			with open(namespace_file_path, 'w') as file:
@@ -174,9 +158,9 @@ def fix_js_namespaces():
 			skipped.append(app)
 
 	if len(fixed) > 0:
-		result.append('URLs for app{} {} fixed.'.format('s' if len(fixed) > 1 else '', ', '.join(fixed)))
+		result.append(f'''URLs for app{'s' if len(fixed) > 1 else ''} {', '.join(fixed)} fixed.''')
 
 	if len(skipped) > 0:
-		result.append('URLs for app{} {} skipped'.format('s' if len(skipped) > 1 else '', ', '.join(skipped)))
+		result.append(f'''URLs for app{'s' if len(skipped) > 1 else ''} {', '.join(skipped)} skipped.''')
 
 	return result
