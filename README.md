@@ -8,8 +8,8 @@
 
 * need the common management commands
   
-* FIU
-    * installer (which means that most of the following will live in FIU repo)
+* SPROO
+    * installer (which means that most of the following will live in SPROO repo)
     * generator UI
         * components should be bundles in their own folders, as should pages. think more on the structure of a sample project
         * should this one also generate django endpoints?

@@ -10,6 +10,6 @@ register = template.Library()
 logger = logging.getLogger(__name__)
 
 
-@register.filter(name='dict_to_data')
+@register.filter(name="dict_to_data")
 def dict_to_data(data_dict):
-	return f''' {' '.join(f'data-{text.slugify(key)}={mark_safe(value)}' for key, value in data_dict.items())}'''
+    return f""" {' '.join(f'data-{text.slugify(key)}={mark_safe(value)}' for key, value in data_dict.items())}"""

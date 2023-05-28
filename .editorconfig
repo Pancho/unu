@@ -24,13 +24,13 @@ max_line_length = 140
 
 [*.py]
 charset = utf-8
-indent_style = tab
+indent_style = space
 tab_width = 4
 # indent_size = 4 # If used with indent_style = space
 end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
-max_line_length = 140
+max_line_length = 80
 
 [*.html]
 charset = utf-8
@@ -42,7 +42,7 @@ insert_final_newline = false
 trim_trailing_whitespace = true
 max_line_length = off
 
-[{*.css, *.scss}]
+[*.css]
 charset = utf-8
 indent_style = tab
 tab_width = 4

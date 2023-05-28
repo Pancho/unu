@@ -7,9 +7,14 @@ beautifulsoup4
 html5lib
 lxml
 pymongo
-pycrypto
+pycryptodome
 whoosh
 pyjwt
 pyyaml
 yamlordereddictloader
 calmjs.parse
+pylint
+pylint-django
+black
+isort
+autoflake

@@ -1,7 +1,6 @@
-{% for include in js_includes %}// include:media/js/{{ include }}
-{% endfor %}'use strict';
+'use strict';
 
-{{ js_namespace }} = (function () {
+var {{ js_namespace }} = (function () {
 	var r = {
 
 	}, u = {

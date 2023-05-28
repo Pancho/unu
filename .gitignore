@@ -76,7 +76,7 @@ media/files
 *.mongodb
 *.ai
 code
-static
+/static
 storage.private.pem
 utils/index
 api/migrations

@@ -1,4 +1,4 @@
-{% load i18n %}{% load client_code %}<!DOCTYPE html>
+{% load i18n %}<!DOCTYPE html>
 <html lang="en">
 	<head>
 		<title>{% block title %}Django Utils Framework{% endblock title %}</title>
@@ -12,7 +12,6 @@
 		{% include 'unu/blocks/navigation.html' %}
 		<main class="bg-bluegrey-5">
 			{% block main %}{% endblock main %}
-		</main>
-		{% block script %}{% endblock script %}
+		</main>{% block script %}{% endblock script %}
 	</body>
 </html>

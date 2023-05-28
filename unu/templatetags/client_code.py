@@ -8,7 +8,8 @@ from django.conf import settings
 
 register = template.Library()
 logger = logging.getLogger(__name__)
-SCRIPT = safestring.mark_safe('''
+SCRIPT = safestring.mark_safe(
+    """
 		<script>
 			var optimize = function () {
 				var cssFileUrl = document.getElementById('locator-css').getAttribute('src'),
@@ -183,13 +184,14 @@ SCRIPT = safestring.mark_safe('''
 			document.addEventListener('DOMContentLoaded', function () {
 				optimize();
 			});
-		</script>''')
+		</script>"""
+)
 
 
 @register.simple_tag
 def optimize():
-	if settings.DEBUG:
-		script_template = template.Template(SCRIPT)
-		return script_template.render(template.Context({}))
-	else:
-		return ''
+    if settings.DEBUG:
+        script_template = template.Template(SCRIPT)
+        return script_template.render(template.Context({}))
+    else:
+        return ""

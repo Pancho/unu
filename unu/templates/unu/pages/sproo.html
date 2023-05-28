@@ -1,0 +1,91 @@
+{% extends 'unu/skeleton.html' %}{% load static %}{% load i18n %}{% load formtags %}{% block style %}<link type="text/css" rel="stylesheet" href="{% static 'unu/css/reset.css' %}?v={{ static_files_version }}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'unu/css/palette.css' %}?v={{ static_files_version }}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'unu/css/all.min.css' %}?v={{ static_files_version }}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'unu/css/sablono.css' %}?v={{ static_files_version }}" />
+		<link type="text/css" rel="stylesheet" href="{% static 'unu/css/unu/sproo.css' %}?v={{ static_files_version }}" />{% endblock style %}{% block script %}
+		<script src="{% static 'unu/js/mavor.js' %}?v={{ static_files_version }}" type="application/javascript"></script>
+		<script src="{% static 'unu/js/djangoutils.js' %}?v={{ static_files_version }}" type="application/javascript"></script>
+		<script src="{% static 'unu/js/sablono.js' %}?v={{ static_files_version }}" type="application/javascript"></script>
+		<script src="{% static 'unu/js/unu/unu.js' %}?v={{ static_files_version }}" type="application/javascript"></script>
+		<script src="{% static 'unu/js/unu/sproo.js' %}?v={{ static_files_version }}" type="application/javascript"></script>{% endblock script %}{% block main %}<div>
+					<h2>Sproo Panel <span class="grey-60">A great way to create front end web apps and avoid npm in one swoop</span></h2>
+				</div>
+				<div data-grid="1/2">
+					<section class="box top-border bg-white border-blue-50" data-columns="1/2">
+						<header class="border-grey-10">
+							<h3>Sproo framework</h3>
+						</header>
+						<ol>{% for app in apps %}
+							<li>
+								<div class="content">
+									<p>Add or update Sproo for app <strong>{{ app }}</strong></p>
+									<a href="{% url 'unu:sproo_get_files' app %}" class="button bg-blue-50 bg-blue-60-hover unu-sproo-get-files">{% if app in apps_with_sproo %}Update Sproo{% else %}Add Sproo{% endif %}</a>
+								</div>
+							</li>{% endfor %}
+						</ol>
+					</section>
+					<section class="box top-border bg-white border-blue-50" data-columns="2/-1">
+						<header class="border-grey-10">
+							<h3>Sproo Apps</h3>
+						</header>
+						<div class="content">{% if sproo_apps|length > 0 %}
+							<dl class="inline-block-children app-data">{% for sproo_app in sproo_apps %}
+								<dt>{{ sproo_app }}</dt>
+								<dd>
+									<a href="{% url 'unu:sproo_app' sproo_app %}" class="button button-small bg-blue-50 bg-blue-50-hover">Manage</a>
+								</dd>{% endfor %}
+							</dl>{% else %}
+							<p>Sproo app not present yet</p>{% endif %}
+						</div>
+					</section>
+				</div>
+				<div data-grid="1/5">
+					<section class="box top-border bg-white border-blue-50" data-columns="1/4">
+						<header class="border-grey-10">
+							<h3>Create New Sproo App</h3>
+						</header>
+						<form id="new-sproo-app" action="{% url 'unu:sproo_new_app' %}">
+							<fieldset>
+								<ol>
+									<li>
+										<label for="app">Django App</label>
+										<select class="field" id="app" name="app">{% for app in apps %}
+											<option value="{{ app }}">{{ app }}</option>{% endfor %}
+										</select>
+									</li>
+									<li>
+										<label for="app-name">Sproo App Name</label>
+										<input type="text" class="field" id="app-name" name="app-name" required="required" />
+									</li>
+									<li>
+										<label for="app-router-root">Router Root URL</label>
+										<input type="text" class="field" id="app-router-root" name="app-router-root" required="required" placeholder="Something like http://www.example.com/ or http://www.example.com/administration" />
+									</li>
+									<li>
+										<label for="app-static-root">Static Root URL</label>
+										<input type="text" class="field" id="app-static-root" name="app-static-root" required="required" placeholder="Something like http://www.example.com/ or http://www.example.com/administration, usually same as router root url" />
+									</li>
+									<li>
+										<label for="app-http-root">HTTP Root URL</label>
+										<input type="text" class="field" id="app-http-root" name="app-http-root" required="required" placeholder="Something like http://www.example.com/api" />
+									</li>
+									<li class="checkbox">
+										<label for="app-enable-logging"><input type="checkbox" id="app-enable-logging" name="app-enable-logging" value="enable-logging" /> Enable Logging</label>
+									</li>
+								</ol>
+								<div class="control">
+									<input type="submit" class="button bg-green-50 bg-green-50-hover" value="Create" />
+								</div>
+							</fieldset>
+						</form>
+					</section>
+					<section class="box top-border bg-white border-blue-50" data-columns="4/-1">
+						<header class="border-grey-10">
+							<h3>Report <span>(log)</span></h3>
+						</header>
+						<div class="content">
+							<ol id="app-log" class="log">
+							</ol>
+						</div>
+					</section>
+				</div>{% endblock main %}

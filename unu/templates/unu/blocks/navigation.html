@@ -4,12 +4,12 @@
 				<li>
 					<a href="{% url 'unu:index' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-cogs"></span> Unu Utils</a>
 				</li>
-				<li class="header bg-shade-30 bluegrey-70">Fiu</li>
+				<li class="header bg-shade-30 bluegrey-70">Sproo</li>
 				<li>
-					<a href="{% url 'unu:fiu' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fab fa-js-square"></span> Fiu Apps</a>
-				</li>{% for fiu_app in fiu_apps %}
+					<a href="{% url 'unu:sproo' %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fa-brands fa-square-js"></span> Sproo Apps</a>
+				</li>{% for sproo_app in sproo_apps %}
 				<li>
-					<a href="{% url 'unu:fiu_app' fiu_app %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-sitemap"></span> {{ fiu_app }}</a>
+					<a href="{% url 'unu:sproo_app' sproo_app %}" class="bluegrey-20 white-hover bg-shade-20-hover"><span class="fas fa-sitemap"></span> {{ sproo_app }}</a>
 				</li>{% endfor %}
 			</ol>
 		</nav>

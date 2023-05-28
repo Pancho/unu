@@ -7,9 +7,9 @@ services:
       - 5432:5432/tcp
     environment:
       LANG: en_US.UTF-8
-      POSTGRES_USER: ${DB_USERNAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
-      POSTGRES_PASSWORD: ${DB_PASSWORD:?You need to set up the .env file. See docker-compose.yml for quick reference.}
-      POSTGRES_DB: ${DB_NAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
+      POSTGRES_USER: ${DB_USERNAME}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
   memcached:
     image: memcached:latest
     restart: on-failure
@@ -20,8 +20,8 @@ services:
 #    image: mongo
 #    restart: on-failure
 #    environment:
-#      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME:?You need to set up the .env file. See docker-compose.yml for quick reference.}
-#      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD:?You need to set up the .env file. See docker-compose.yml for quick reference.}
+#      MONGO_INITDB_ROOT_USERNAME: ${MONGO_USERNAME}
+#      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
   nginx:
     image: nginx:latest
     restart: on-failure
@@ -32,15 +32,21 @@ services:
     links:
       - web
     volumes:
-      - ${NGINX_CONF_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/etc/nginx/conf.d:consistent
-      - ${NGINX_MEDIA_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/media:consistent
-      - ${NGINX_STATIC_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/static:consistent
+      - ${NGINX_CONF_PATH}:/etc/nginx/conf.d
+      - ${NGINX_MEDIA_PATH}:/media
+      - ${NGINX_STATIC_PATH}:/static
   web:
     build: .
     restart: on-failure
-    command: bash -c "./wait-for-it.sh db:5432 -t 0 && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn djangoutils.wsgi:application -w 2 -b 0.0.0.0:8080 --reload"
+    user: 1000:1000
+    command: bash -c "chmod +x ./wait-for-it.sh && ./wait-for-it.sh db:5432 -t 0 && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn djangoutils.wsgi:application -w 2 -b 0.0.0.0:8080 --reload"
+#    volumes:
+#      - type: bind
+#        source: .
+#        target: /code
+#    working_dir: /code
     volumes:
-      - ${CODE_PATH:?You need to set up the .env file. See docker-compose.yml for quick reference.}:/code:consistent
+      - ${CODE_PATH}:/code
     ports:
       - 8080:8080/tcp
     depends_on:
