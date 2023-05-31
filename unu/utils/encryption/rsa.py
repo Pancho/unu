@@ -1,8 +1,8 @@
 import logging
 
 
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.PublicKey import RSA
+from Cryptodome.Cipher import PKCS1_OAEP
+from Cryptodome.PublicKey import RSA
 
 
 logger = logging.getLogger(__name__)

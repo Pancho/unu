@@ -1,7 +1,7 @@
 import logging
 
-from Crypto import Random
-from Crypto.Cipher import AES
+from Cryptodome import Random
+from Cryptodome.Cipher import AES
 
 
 logger = logging.getLogger(__name__)
