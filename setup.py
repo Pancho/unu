@@ -28,8 +28,9 @@ setup(
         "Programming Language :: Python :: 3 :: Only",
     ],
     keywords="development, utilities, utils",
-    package_data={"unu/static": ["*"]},
-    packages=find_packages(),
+    packages=find_packages(where="unu"),
+    package_dir={"": "unu"},
+    package_data={"static": ["*"]},
     python_requires=">=3.10, <4",
     install_requires=[
         "django",
