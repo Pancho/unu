@@ -7,7 +7,7 @@ beautifulsoup4
 html5lib
 lxml
 pymongo
-pycryptodome
+pycryptodomex
 whoosh
 pyjwt
 pyyaml

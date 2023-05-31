@@ -41,7 +41,7 @@ setup(
         "html5lib",
         "lxml",
         "pymongo",
-        "pycrypto",
+        "pycryptodomex",
         "whoosh",
         "pyjwt",
         "pyyaml",
