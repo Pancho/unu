@@ -30,9 +30,9 @@
 						</header>
 						<div class="content">{% if sproo_apps|length > 0 %}
 							<dl class="inline-block-children app-data">{% for sproo_app in sproo_apps %}
-								<dt>{{ sproo_app }}</dt>
+								<dt>{{ sproo_app.app }}/{{ sproo_app.sproo_app }}</dt>
 								<dd>
-									<a href="{% url 'unu:sproo_app' sproo_app %}" class="button button-small bg-blue-50 bg-blue-50-hover">Manage</a>
+									<a href="{% url 'unu:sproo_app' sproo_app.app sproo_app.sproo_app %}" class="button button-small bg-blue-50 bg-blue-50-hover">Manage</a>
 								</dd>{% endfor %}
 							</dl>{% else %}
 							<p>Sproo app not present yet</p>{% endif %}

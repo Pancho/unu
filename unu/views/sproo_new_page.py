@@ -17,7 +17,7 @@ class Controller(views.View, unu.utils.views.mixins.debug.DebugOnlyMixin):
 
     def post(self, *args, **kwargs):
         log = unu.utils.frontend.sproo.package.create_sproo_page(
-            self.request.POST.get("app-name"),
+            self.request.POST.get("page-app"),
             self.request.POST.get("page-app-slug"),
             self.request.POST.get("page-name"),
             self.request.POST.get("page-router-url-pattern"),

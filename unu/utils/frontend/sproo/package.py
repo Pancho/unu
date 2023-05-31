@@ -79,8 +79,8 @@ def create_sproo_app(app, app_name, router_root_url, http_endpoint_stub, enable_
         "not_found_page": not_found_page_class,
         "routes": [],
         "root_stylesheets": [
-            f"{settings.STATIC_URL}{app}/sproo/css/meta",
-            f"{settings.STATIC_URL}{app}/sproo/css/normalize",
+            f"{settings.STATIC_URL}{app}/js/sproo/css/meta",
+            f"{settings.STATIC_URL}{app}/js/sproo/css/normalize",
         ],
         "authentication_url": None,
         "authentication_class": None,
@@ -99,9 +99,8 @@ def create_sproo_app(app, app_name, router_root_url, http_endpoint_stub, enable_
 def create_sproo_component(app, app_folder, component_name, use_store, include_stylesheet):
     log = []
 
-    app_data = unu.utils.frontend.sproo.analyze.get_sproo_app_data(app_folder)
+    app_data = unu.utils.frontend.sproo.analyze.get_sproo_app_data(app, app_folder)
     index = app_data.get("index")
-    app_name = index.get("app_name")
     enable_logging = index.get("logger_config") is not None
 
     (
@@ -112,7 +111,7 @@ def create_sproo_component(app, app_folder, component_name, use_store, include_s
         params=[],
         enable_logging=enable_logging,
         component_name=component_name,
-        app_name=app_name,
+        app_name=app_folder,
         app=app,
         use_store=use_store,
         include_stylesheet=include_stylesheet,
@@ -125,9 +124,8 @@ def create_sproo_component(app, app_folder, component_name, use_store, include_s
 def create_sproo_page(app, app_folder, component_name, url_pattern, use_store):
     log = []
 
-    app_data = unu.utils.frontend.sproo.analyze.get_sproo_app_data(app_folder)
+    app_data = unu.utils.frontend.sproo.analyze.get_sproo_app_data(app, app_folder)
     index = app_data.get("index")
-    app_name = index.get("app_name")
     enable_logging = index.get("logger_config") is not None
     params = [param.replace(":", "") for param in url_pattern.split("/") if param.startswith(":")]
 
@@ -136,22 +134,30 @@ def create_sproo_page(app, app_folder, component_name, url_pattern, use_store):
         page_path,
         page_log,
     ) = unu.utils.frontend.sproo.helper.create_sproo_page(
-        params=[],
+        params=params,
         enable_logging=enable_logging,
         component_name=component_name,
-        app_name=app_name,
+        app_name=app_folder,
         app=app,
         use_store=use_store,
         include_stylesheet=True,
     )
     log.extend(page_log)
 
-    index["routes"].append(
-        {
-            "class_name": page_class,
-            "path": url_pattern,
-        }
-    )
+    index = {
+        **index,
+        'app': app,
+        'app_name': app_folder,
+        'static_path': settings.STATIC_URL,
+    }
+    new_route = {
+        "component": page_class,
+        "path": url_pattern,
+        "guard": "",
+        "hooks": "",
+    }
+    if new_route not in index["routes"]:
+        index["routes"].append(new_route)
     log_entry = {
         "class_name": page_class,
         "path": url_pattern,
@@ -160,11 +166,6 @@ def create_sproo_page(app, app_folder, component_name, url_pattern, use_store):
     if use_store:
         index["providers"].append(f"{page_class}.STORE_PROVIDER")
         log.append(f"Adding provider {page_class}.STORE_PROVIDER")
-    index["imports"].update(
-        {
-            page_class: page_path,
-        }
-    )
     log.append(f"Adding import {page_class}:{page_path}")
 
     index_log = unu.utils.frontend.sproo.helper.create_sproo_index(**index)

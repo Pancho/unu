@@ -19,5 +19,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # Unu views
     path("unu/", include("unu.urls", namespace="unu")),
-    path("test-fixers/", include("test_fixers.urls", namespace="test_fixers")),
+    path("test-fixers", include("test_fixers.urls", namespace="test_fixers")),
 ]

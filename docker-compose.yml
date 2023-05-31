@@ -40,11 +40,6 @@ services:
     restart: on-failure
     user: 1000:1000
     command: bash -c "chmod +x ./wait-for-it.sh && ./wait-for-it.sh db:5432 -t 0 && python manage.py makemigrations && python manage.py migrate && python manage.py collectstatic --noinput && gunicorn djangoutils.wsgi:application -w 2 -b 0.0.0.0:8080 --reload"
-#    volumes:
-#      - type: bind
-#        source: .
-#        target: /code
-#    working_dir: /code
     volumes:
       - ${CODE_PATH}:/code
     ports:

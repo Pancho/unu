@@ -15,4 +15,5 @@ urlpatterns = [
 	path('add-domain-3', views.add_domain_3.Controller.as_view(), name='add_domain_3'),
 	path('add-domain-4', views.add_domain_4.Controller.as_view(), name='add_domain_4'),
 	path('add-domain-5', views.add_domain_5.Controller.as_view(), name='add_domain_5'),
+	path('<path:path>', views.index.Controller.as_view(), name='index'),
 ]

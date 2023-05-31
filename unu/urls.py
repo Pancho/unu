@@ -60,7 +60,7 @@ if settings.DEBUG:
             name="sproo_new_component",
         ),
         path(
-            "sproo-app/<slug:app_folder>",
+            "sproo-app/<slug:app>/<slug:app_folder>",
             views.sproo_app.Controller.as_view(),
             name="sproo_app",
         ),

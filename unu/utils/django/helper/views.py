@@ -134,7 +134,7 @@ def add_url(context):
     if kwarg_name is not None:
         url = f"""{url}/<{f'{kwarg_type}:' if kwarg_type is not None else ''}""" "{kwarg_name}>"
 
-    url_path = f"\tpath('{url}', views.{view_name}." "Controller.as_view(), name='{view_name}'),"
+    url_path = f"\tpath('{url}', views.{view_name}.Controller.as_view(), name='{view_name}'),"
 
     with open(f"{app}/urls.py", "r", encoding="utf-8") as file:
         if url_path in file.read():

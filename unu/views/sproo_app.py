@@ -19,7 +19,8 @@ class Controller(base.TemplateView, views.mixins.debug.DebugOnlyMixin):
             {
                 "sproo_apps": frontend.sproo.analyze.get_sproo_apps(),
                 "sproo_app_data": frontend.sproo.analyze.get_sproo_app_data(
-                    self.kwargs.get("app_folder")
+                    kwargs.get("app"),
+                    kwargs.get("app_folder")
                 ),
             }
         )

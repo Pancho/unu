@@ -17,6 +17,7 @@ class Controller(views.View, unu.utils.views.mixins.debug.DebugOnlyMixin):
 
     def post(self, *args, **kwargs):
         log = unu.utils.frontend.sproo.package.create_sproo_component(
+            self.request.POST.get("component-app"),
             self.request.POST.get("component-app-slug"),
             self.request.POST.get("component-name"),
             self.request.POST.get("component-use-store") is not None,

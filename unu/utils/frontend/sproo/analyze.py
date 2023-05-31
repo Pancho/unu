@@ -14,21 +14,17 @@ SPROO_APP_INDEX_PAGE = re.compile(r"(homePage: {\s)(.*?\s)(\s},)")
 SPROO_APP_NOT_FOUND_PAGE = re.compile(r"(notFound: {\s)(.*?\s)(\s},)")
 SPROO_APP_ROUTES = re.compile(r"(routes: \[)((.*?\s)*?)(\],)")
 SPROO_APP_ROUTES_INNER = re.compile(r"(\n\s*?)({.+?\1})", re.M | re.S)
-SPROO_APP_COMPONENT_ENTRY = re.compile(r"(component: )(.*)(,*)")
+SPROO_APP_COMPONENT_ENTRY = re.compile(r"(component: )('\"*)(.*)('\"*)(,*)")
 SPROO_APP_PATH_ENTRY = re.compile(r"(path: \')(.*)(\',*)")
-SPROO_APP_GUARD_ENTRY = re.compile(r"(guard: )(.*)(,*)")
+SPROO_APP_GUARD_ENTRY = re.compile(r"(guard: )('\"*)(.*)('\"*)(,*)")
 SPROO_APP_HOOKS_ENTRY = re.compile(r"(hooks: )((.*?\s)*?})")
 SPROO_APP_ROOT_STYLESHEETS = re.compile(r"(rootStylesheets: \[\s)((.*?\s)*?)(\])")
-SPROO_APP_AUTHENTICATION_MODULE = re.compile(r"(authenticationModule: )(.*?)(,)")
+SPROO_APP_AUTHENTICATION_MODULE = re.compile(r"(authenticationModule: )('\"*)(.*)('\"*)(,)")
 SPROO_APP_AUTHENTICATION_URL = re.compile(r"(authenticationUrl: \')(.*)(\',*)")
 SPROO_APP_HTTP_ENDPOINT_STUB = re.compile(r"(httpEndpointStub: \')(.*?)(\',)")
-SPROO_APP_ON_APP_READY = re.compile(
-    r"(onAppReady: \[\n+?\s+)(.*?)(\n\s\],)", re.M | re.S
-)
+SPROO_APP_ON_APP_READY = re.compile(r"(onAppReady: \[\n+?\s+)(.*?)(\n\s\],)", re.M | re.S)
 SPROO_APP_PROVIDERS = re.compile(r"(providers: \[)(.*?)(])", re.M | re.S)
-SPROO_APP_LOGGER_CONFIG = re.compile(
-    r"(loggerConfig: {\n+?\s+)(.*?)(\n\s},)", re.M | re.S
-)
+SPROO_APP_LOGGER_CONFIG = re.compile(r"(loggerConfig: {\n+?\s+)(.*?)(\n\s},)", re.M | re.S)
 
 
 def has_sproo():
@@ -62,20 +58,26 @@ def get_sproo_apps():
         if not os.path.exists(js_folder_path):
             continue
         for folder in os.listdir(js_folder_path):
-            index_file_path = f"{folder}/index.js"
+            index_file_path = f"{js_folder_path}/{folder}/index.js"
             if os.path.exists(index_file_path):
-                sproo_apps.append(folder)
+                with open(index_file_path, "r", encoding="utf-8") as file:
+                    contents = file.read()
+                if "new App({" in contents:
+                    sproo_apps.append({
+                        'app': app,
+                        'sproo_app': folder
+                    })
 
     return sproo_apps
 
 
-def get_sproo_app_data(app_folder):
-    if not has_sproo_app():
+def get_sproo_app_data(app, app_folder):
+    if app is None or app_folder is None:
         return {}
 
     app_file = ""
     index_file_contents = ""
-    index_file_path = f"{settings.UNU_FRONTEND_MEDIA_PATH}{app_folder}/index.js"
+    index_file_path = f"{settings.UNU_PROJECT_ROOT}/{app}/static/{app}/js/{app_folder}/index.js"
 
     if os.path.exists(index_file_path):
         with open(index_file_path, "r", encoding="utf-8") as index_file:
@@ -83,9 +85,9 @@ def get_sproo_app_data(app_folder):
             app_file = index_file_path
 
     pages = []
-    pages_folder = f"{settings.UNU_FRONTEND_MEDIA_PATH}{app_folder}/pages"
+    pages_folder = f"{settings.UNU_PROJECT_ROOT}/{app}/static/{app}/js/{app_folder}/pages"
     components = []
-    components_folder = f"{settings.UNU_FRONTEND_MEDIA_PATH}{app_folder}/components"
+    components_folder = f"{settings.UNU_PROJECT_ROOT}/{app}/static/{app}/js/{app_folder}/components"
 
     if os.path.exists(pages_folder):
         for folder in os.listdir(pages_folder):
@@ -98,8 +100,9 @@ def get_sproo_app_data(app_folder):
     index = parse_index(index_file_contents)
     return {
         "index": index,
-        "app_file": app_file,
+        "app": app,
         "app_folder": app_folder,
+        "app_file": app_file,
         "page_folders": pages,
         "component_folders": components,
     }
@@ -158,7 +161,7 @@ def parse_index_page(index_file_contents):
             if line.strip() == "":
                 continue
             component_match = SPROO_APP_COMPONENT_ENTRY.search(line)
-            class_name = component_match.group(2).strip()
+            class_name = component_match.group(3).strip()
             return class_name
     return None
 
@@ -171,14 +174,13 @@ def parse_not_found_page(index_file_contents):
             if line.strip() == "":
                 continue
             component_match = SPROO_APP_COMPONENT_ENTRY.search(line)
-            class_name = component_match.group(2).strip()
+            class_name = component_match.group(3).strip()
             return class_name
     return None
 
 
 def parse_routes(index_file_contents):
     result = []
-    imports = set()
 
     match = SPROO_APP_ROUTES.search(index_file_contents)
 
@@ -190,7 +192,7 @@ def parse_routes(index_file_contents):
             path_match = SPROO_APP_PATH_ENTRY.search(blob)
             guard_match = SPROO_APP_GUARD_ENTRY.search(blob)
             hooks_match = SPROO_APP_HOOKS_ENTRY.search(blob)
-            class_name = component_match.group(2).replace(",", "").strip()
+            class_name = component_match.group(3).replace(",", "").strip()
             path = path_match.group(2).replace(",", "").strip()
             guard = ""
             if guard_match is not None:
@@ -198,20 +200,16 @@ def parse_routes(index_file_contents):
             hooks = ""
             if hooks_match is not None:
                 hooks = hooks_match.group(2)  # This one we leave as-is
-            result.append(
-                {
-                    "class_name": class_name,
-                    "path": path,
-                    "guard": guard,
-                    "hooks": hooks,
-                }
-            )
-            imports.add(class_name)
-            if guard != "":
-                imports.add(guard)
+            route = {
+                "component": class_name,
+                "path": path,
+                "guard": guard,
+                "hooks": hooks,
+            }
+            if route not in result:
+                result.append(route)
 
     return result
-    # return result, imports
 
 
 def parse_root_stylesheets(index_file_contents):
