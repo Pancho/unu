@@ -29,7 +29,6 @@ setup(
     ],
     keywords="development, utilities, utils",
     package_data={"static": ["*"]},
-    include_package_data=True,
     packages=find_packages(),
     python_requires=">=3.10, <4",
     install_requires=[
