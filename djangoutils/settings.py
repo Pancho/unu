@@ -19,7 +19,6 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "unu",
-    "test_fixers",
 ]
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
@@ -36,7 +35,6 @@ TEMPLATES = [
         "BACKEND": "django.template.backends.django.DjangoTemplates",
         "DIRS": [
             os.path.join(BASE_DIR, "unu/templates/"),
-            os.path.join(BASE_DIR, "test_fixers/templates/"),
         ],
         "APP_DIRS": True,
         "OPTIONS": {
