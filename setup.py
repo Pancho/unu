@@ -28,7 +28,7 @@ setup(
         "Programming Language :: Python :: 3 :: Only",
     ],
     keywords="development, utilities, utils",
-    package_data={"static": ["*"]},
+    package_data={"unu/static": ["*"]},
     packages=find_packages(),
     python_requires=">=3.10, <4",
     install_requires=[
