@@ -17,11 +17,11 @@ new App({
 			hooks: {{ route.hooks|safe }},{% endif %}
 		},{% endfor %}
 	],{% if authentication_url %}
-	authenticationUrl: '{{ authentication_url }}',{% endif %}
-	authenticationModule: {% if authentication_module %}{{ authentication_module }}{% else %}null{% endif %},
+	authenticationUrl: '{{ authentication_url }}',{% endif %}{% if authentication_module %}
+	authenticationModule: '{{ authentication_module }}',{% endif %}{% if providers %}
 	providers: [{% for provider in providers %}
 		{{ provider }},{% endfor %}
-	],
+	],{% endif %}
 	rootStylesheets: [{% for stylesheet_path in root_stylesheets %}
 		'{{ stylesheet_path }}',{% endfor %}
 	],
