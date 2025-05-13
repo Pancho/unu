@@ -27,10 +27,6 @@ SPROO_APP_PROVIDERS = re.compile(r"(providers: \[)(.*?)(])", re.M | re.S)
 SPROO_APP_LOGGER_CONFIG = re.compile(r"(loggerConfig: {\n+?\s+)(.*?)(\n\s},)", re.M | re.S)
 
 
-def has_sproo():
-    return os.path.isdir(f"{settings.UNU_FRONTEND_MEDIA_PATH}sproo")
-
-
 def apps_with_sproo():
     sproo_apps = []
 
@@ -40,14 +36,6 @@ def apps_with_sproo():
             sproo_apps.append(app)
 
     return sproo_apps
-
-
-def has_sproo_app():
-    for folder in os.listdir(settings.UNU_FRONTEND_MEDIA_PATH):
-        index_file_path = f"{settings.UNU_FRONTEND_MEDIA_PATH}{folder}/index.js"
-        if os.path.exists(index_file_path):
-            return True
-    return False
 
 
 def get_sproo_apps():
