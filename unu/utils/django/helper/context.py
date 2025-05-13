@@ -17,9 +17,10 @@ def has_models(app):
 def get_apps(with_models=False):
     apps = []
 
-    for folder in os.listdir(path=settings.UNU_PROJECT_ROOT):
-        if os.path.isdir(folder) and os.path.isfile(f"{folder}/apps.py"):
-            with open(f"{folder}/apps.py", "r", encoding="utf-8") as file:
+    for folder_name in os.listdir(path=settings.UNU_PROJECT_ROOT):
+        folder_path = f'{settings.UNU_PROJECT_ROOT}/{folder_name}'
+        if os.path.isdir(folder_path) and os.path.isfile(f"{folder_path}/apps.py"):
+            with open(f"{folder_path}/apps.py", "r", encoding="utf-8") as file:
                 contents = file.read()
 
                 if "name = " in contents:

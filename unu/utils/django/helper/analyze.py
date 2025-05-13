@@ -38,9 +38,9 @@ def analyze_views():
         has_file = os.path.isfile(f"{settings.UNU_PROJECT_ROOT}/{app}/views.py")
 
         if has_folder:
-            logger.info(f'App {app} already has folder')
+            logger.info(f'App {app} already has folder ({f"{settings.UNU_PROJECT_ROOT}/{app}/views"})')
         else:
-            logger.info(f'App {app} doesn\'t have a folder yet')
+            logger.info(f'App {app} doesn\'t have a folder yet ({f"{settings.UNU_PROJECT_ROOT}/{app}/views"})')
 
         if not has_folder and has_file:
             result.append(
