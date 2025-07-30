@@ -77,7 +77,7 @@ def assemble_sproo_component(
 
     log.append(f"Creating new {log_entity}")
 
-    component_name = kwargs.get("component_name").lower().replace("page", "").replace("component", "").strip()
+    component_name = kwargs.get("component_name").lower().replace("-", " ").replace("page", "").replace("component", "").strip()
     class_name = f"{''.join([part.capitalize() for part in component_name.split(' ')])}{component_name_suffix}Component"
     log.append(f"New {log_entity} class name: {class_name}")
 
