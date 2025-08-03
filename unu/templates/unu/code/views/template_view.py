@@ -14,7 +14,7 @@ class Controller(base.TemplateView{% if class_extensions %}, {{ class_extensions
 	def test_func(self):
 		return self.request.user.is_superuser
 {% endif %}
-	# Per chance this needs updating, this will serve as template
+	# Per chance this needs updating, this will serve as a template
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		# Your code here

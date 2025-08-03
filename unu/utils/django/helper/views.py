@@ -122,6 +122,7 @@ def add_url(context):
     view_name = context.get("view_name")
     kwarg_name = context.get("kwarg_name")
     kwarg_type = context.get("kwarg_type")
+    url_prefix = context.get("url_prefix")
 
     log.append(f"Adding url for view {view_name} in app {app}")
 
@@ -134,7 +135,7 @@ def add_url(context):
     if kwarg_name is not None:
         url = f"""{url}/<{f'{kwarg_type}:' if kwarg_type is not None else ''}""" "{kwarg_name}>"
 
-    url_path = f"\tpath('{url}', views.{view_name}.Controller.as_view(), name='{view_name}'),"
+    url_path = f"\tpath('{f'{url_prefix}/' if url_prefix is not None else ''}{url}', views.{view_name}.Controller.as_view(), name='{app}.{view_name}'),"
 
     with open(f"{app}/urls.py", "r", encoding="utf-8") as file:
         if url_path in file.read():
@@ -520,6 +521,63 @@ FORM_VIEW_CONFIG = {
         add_static_files,
     ],
 }
+HEADLESS_FORM_VIEW_CONFIG = {
+    "fields": [
+        {
+            "name": "app",
+            "label": "Django App",
+            "field": "select",
+            "class": "populate-with-apps",
+            "data": {
+                "get-apps-url": reverse_lazy("unu:get_apps"),
+            },
+            "coerce": lambda post: post.get("app"),
+        },
+        {
+            "name": "name",
+            "label": "View Name",
+            "field": "input",
+            "class": "live-slugify",
+            "coerce": lambda post: post.get("name"),
+        },
+        {
+            "name": "url_prefix",
+            "label": "URL Prefix",
+            "field": "input",
+            "coerce": lambda post: post.get("url_prefix"),
+        },
+        {
+            "name": "mixins",
+            "label": "Controller mixins",
+            "field": "select-multiple",
+            "options": CONTROLLER_MIXINS.keys(),
+            "coerce": lambda post: post.getlist("mixins"),
+        },
+    ],
+    "upgrade_context": lambda context: context.update(
+        {
+            "view_template": "form_view_headless",
+            "view_name": '_'.join([part.lower() for part in camel_case_split(context.get('name'))]),
+            "url": text.slugify(camel_case_split(context.get('name'))),
+            "class_extensions": ", ".join([CONTROLLER_MIXINS.get(mixin).get("module_path") for mixin in context.get("mixins")]),
+            "imports": sorted(set().union(*[CONTROLLER_MIXINS.get(mixin).get("required_imports") for mixin in context.get("mixins")])),
+            "form": f"""{''.join(
+                [
+                    part.capitalize() for part in camel_case_split(
+                        context.get('name')
+                    )
+                ]
+            )}Form""",
+        }
+    ),
+    "process": [
+        add_form,
+        fix_forms_imports,
+        add_file_to_views,
+        fix_views_imports,
+        add_url,
+    ],
+}
 CHOICES = collections.OrderedDict(
     {
         "view": {
@@ -537,6 +595,10 @@ CHOICES = collections.OrderedDict(
         "form-view": {
             "name": "FormView",
             "config": FORM_VIEW_CONFIG,
+        },
+        "headless-form-view": {
+            "name": "Headless FormView",
+            "config": HEADLESS_FORM_VIEW_CONFIG,
         },
     }
 )

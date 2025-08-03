@@ -32,7 +32,7 @@ class Controller(edit.FormView{% if class_extensions %}, {{ class_extensions }}{
 		form.process_form()
 		return super().form_valid(form)
 
-	# Per chance this needs updating, this will serve as template
+	# Per chance this needs updating, this will serve as a template
 	def get_context_data(self, **kwargs):
 		context = super().get_context_data(**kwargs)
 		# Your code here
