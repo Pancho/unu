@@ -122,7 +122,7 @@ def add_url(context):
     view_name = context.get("view_name")
     kwarg_name = context.get("kwarg_name")
     kwarg_type = context.get("kwarg_type")
-    url_prefix = context.get("url_prefix")
+    custom_path = context.get("custom_path")
 
     log.append(f"Adding url for view {view_name} in app {app}")
 
@@ -130,12 +130,16 @@ def add_url(context):
         urls_content = file.read()
 
     urls_split = urls_content.split("]", 1)
-    url = context.get("url")
+    if custom_path is not None:
+        url = custom_path
+    else:
+        url = context.get("url")
 
+    # TODO: this either has to be finished or removed
     if kwarg_name is not None:
         url = f"""{url}/<{f'{kwarg_type}:' if kwarg_type is not None else ''}""" "{kwarg_name}>"
 
-    url_path = f"\tpath('{f'{url_prefix}/' if url_prefix is not None else ''}{url}', views.{view_name}.Controller.as_view(), name='{app}.{view_name}'),"
+    url_path = f"\tpath('{url}', views.{view_name}.Controller.as_view(), name='{app}.{view_name}'),"
 
     with open(f"{app}/urls.py", "r", encoding="utf-8") as file:
         if url_path in file.read():
@@ -311,6 +315,12 @@ VIEW_CONFIG = {
             "coerce": lambda post: post.get("name"),
         },
         {
+            "name": "custom_path",
+            "label": "Custom Url Path",
+            "field": "input",
+            "coerce": lambda post: post.get("custom_path"),
+        },
+        {
             "name": "methods",
             "label": "HTTP Methods",
             "field": "select-multiple",
@@ -363,6 +373,12 @@ TEMPLATE_VIEW_CONFIG = {
             "coerce": lambda post: post.get("name"),
         },
         {
+            "name": "custom_path",
+            "label": "Custom Url Path",
+            "field": "input",
+            "coerce": lambda post: post.get("custom_path"),
+        },
+        {
             "name": "mixins",
             "label": "Controller mixins",
             "field": "select-multiple",
@@ -412,6 +428,12 @@ REDIRECT_VIEW_CONFIG = {
             "field": "input",
             "class": "live-slugify",
             "coerce": lambda post: post.get("name"),
+        },
+        {
+            "name": "custom_path",
+            "label": "Custom Url Path",
+            "field": "input",
+            "coerce": lambda post: post.get("custom_path"),
         },
         {
             "name": "pattern_name",
@@ -478,6 +500,12 @@ FORM_VIEW_CONFIG = {
             "coerce": lambda post: post.get("name"),
         },
         {
+            "name": "custom_path",
+            "label": "Custom Url Path",
+            "field": "input",
+            "coerce": lambda post: post.get("custom_path"),
+        },
+        {
             "name": "mixins",
             "label": "Controller mixins",
             "field": "select-multiple",
@@ -541,10 +569,10 @@ HEADLESS_FORM_VIEW_CONFIG = {
             "coerce": lambda post: post.get("name"),
         },
         {
-            "name": "url_prefix",
-            "label": "URL Prefix",
+            "name": "custom_path",
+            "label": "Custom Url Path",
             "field": "input",
-            "coerce": lambda post: post.get("url_prefix"),
+            "coerce": lambda post: post.get("custom_path"),
         },
         {
             "name": "mixins",
