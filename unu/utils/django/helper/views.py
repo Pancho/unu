@@ -129,7 +129,7 @@ def add_url(context):
     with open(f"{settings.UNU_PROJECT_ROOT}/{app}/urls.py", "r", encoding="utf-8") as file:
         urls_content = file.read()
 
-    urls_split = urls_content.split("]")
+    urls_split = urls_content.split("]", 1)
     url = context.get("url")
 
     if kwarg_name is not None:
@@ -142,7 +142,7 @@ def add_url(context):
             raise ValueError(f"Will not add an existing url to urls.py for app {app}.")
 
     with open(f"{app}/urls.py", "w", encoding="utf-8") as file:
-        file.write(f"{urls_split[0]}{url_path}\n]\n")
+        file.write(f"{urls_split[0]}{url_path}\n]{urls_split[1]}")
 
     log.append(f"Added new path to urls.py for app {app}: {url_path}")
 
